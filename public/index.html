@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BetaDock — Where Next-Gen Products & Beta Tools Take Flight</title>
+  <meta name="description" content="Discover top indie products, SaaS tools, AI platforms, and beta developer utilities. List your product for free or boost for instant visibility.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+</head>
+<body>
+
+  <!-- ================= SITE HEADER ================= -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo-wrap" id="headerLogoLink">
+          <div class="logo-badge">🚀</div>
+          <div class="logo-text">Beta<span>dock</span></div>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link active"><span class="nav-pillar-tag tag-discover">Discover</span> Products</a></li>
+            <li><a href="#dock-race" class="nav-link">Daily Race <span class="nav-pill">Live</span></a></li>
+            <li><a href="#collections" class="nav-link">Collections</a></li>
+            <li><a href="launch.html" class="nav-link"><span class="nav-pillar-tag tag-launch">Launch</span> AI Studio</a></li>
+            <li><a href="dashboard.html" class="nav-link">Command Center</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <div id="headerAuthContainer"></div>
+          <a href="launch.html" class="btn btn-primary btn-sm">⚡ Launch Studio</a>
+          <a href="submit.html" class="btn btn-ghost btn-sm">+ Submit Tool</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-pill">
+          <span class="dot"></span>
+          <span>Submit Once. Launch Everywhere. 1,280+ Products Marketed</span>
+        </div>
+
+        <h1 class="hero-title">
+          Where Next-Gen Products <br>
+          <span class="highlight">Get Discovered & Marketed With AI</span>
+        </h1>
+
+        <p class="hero-desc">
+          Discover top indie SaaS & AI tools — or turn your product into an automated multi-channel launch campaign in under 60 seconds.
+        </p>
+
+        <div class="hero-actions">
+          <a href="launch.html" class="btn btn-primary btn-lg" id="heroLaunchStudioCta">
+            ⚡ Launch Your Product With AI →
+          </a>
+          <a href="#dock-race" class="btn btn-ghost btn-lg" id="heroExploreCta">
+            🏆 Explore Daily Race
+          </a>
+        </div>
+
+        <!-- Live Platform Stats -->
+        <div class="hero-stats-row">
+          <div class="stat-item">
+            <div class="stat-value">1,280<span class="stat-accent">+</span></div>
+            <div class="stat-label">Products Listed</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value">48.2K</div>
+            <div class="stat-label">Monthly Visitors</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value">150<span class="stat-accent">+</span></div>
+            <div class="stat-label">Exclusive Founder Deals</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value">24h</div>
+            <div class="stat-label">Fast-Track Turnaround</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH & CATEGORY FILTER SECTION -->
+    <section class="search-section" id="search-section">
+      <div class="container">
+        <!-- Search Input Bar -->
+        <div class="search-box-wrap">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="directorySearchInput" 
+            class="search-input" 
+            placeholder="Search products by name, tagline, AI, DevTools, or keyword..." 
+            autocomplete="off"
+          />
+          <button type="button" class="search-clear-btn" id="clearSearchBtn">✕</button>
+        </div>
+
+        <!-- Category Horizontal Filter Pills -->
+        <div class="category-filter-wrap" id="categoryFilterContainer">
+          <button type="button" class="filter-pill active" data-category="all">✨ All Products</button>
+          <button type="button" class="filter-pill" data-category="AI Tools">⚡ AI Tools</button>
+          <button type="button" class="filter-pill" data-category="DevTools">🛠️ DevTools</button>
+          <button type="button" class="filter-pill" data-category="Analytics">📊 Analytics</button>
+          <button type="button" class="filter-pill" data-category="Design">🎨 Design</button>
+          <button type="button" class="filter-pill" data-category="Marketing">✍️ Marketing</button>
+          <button type="button" class="filter-pill" data-category="Productivity">🎧 Productivity</button>
+          <button type="button" class="filter-pill" data-category="Fintech">💳 Fintech</button>
+        </div>
+
+        <!-- Secondary Controls / Sort -->
+        <div class="filter-controls-row">
+          <div class="filter-count" id="resultCount">Showing <strong>9</strong> products</div>
+
+          <div class="filter-sort-group">
+            <button type="button" class="filter-toggle-btn" id="testersOnlyToggle">
+              <span>🎯 Needs Testers (Perks)</span>
+            </button>
+
+            <button type="button" class="filter-toggle-btn" id="dealsOnlyToggle">
+              <span>🏷️ Exclusive Deals Only</span>
+            </button>
+
+            <select id="sortSelect" class="filter-select" aria-label="Sort products">
+              <option value="trending">🔥 Trending (Most Upvoted)</option>
+              <option value="newest">🕒 Newest First</option>
+              <option value="featured">⭐ Featured First</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= DAILY DOCK RACE (SPOTLIGHT) ================= -->
+    <section class="dock-race-section" id="dock-race">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">
+              <span>🏆 Daily Dock Race</span>
+            </div>
+            <h2 class="section-title">Today's Top Launches</h2>
+          </div>
+
+          <div class="race-timer-pill" id="raceTimerBadge">
+            <span>Race resets in:</span>
+            <strong id="raceTimerCountdown">--h --m --s</strong>
+          </div>
+        </div>
+
+        <!-- Podium Top 3 Cards rendered by app.js -->
+        <div class="race-podium-grid" id="podiumGrid">
+          <!-- Populated by js/app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MAIN DIRECTORY GRID ================= -->
+    <section class="directory-section" id="directory">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Explore All Launches</h2>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div class="product-grid" id="directoryGrid">
+          <!-- Dynamically injected by js/app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CURATED COLLECTIONS SECTION ================= -->
+    <section class="collections-section" id="collections">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">
+              <span>📚 Curated Stacks</span>
+            </div>
+            <h2 class="section-title">Explore Collections</h2>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Hand-picked stacks tailored for specific builder workflows.</p>
+        </div>
+
+        <div class="collections-grid">
+          <div class="collection-card" onclick="filterByCategory('AI Tools')">
+            <div>
+              <div class="collection-card-title">🤖 AI Solopreneur Toolkit</div>
+              <p class="collection-card-tagline">Autonomous agents, workflow orchestrators, and prompt engines to operate a 1-person software powerhouse.</p>
+            </div>
+            <span class="collection-card-count">4 Products • Filter View →</span>
+          </div>
+
+          <div class="collection-card" onclick="filterByCategory('DevTools')">
+            <div>
+              <div class="collection-card-title">🛠️ Developer Productivity Stack</div>
+              <p class="collection-card-tagline">High-leverage documentation generators, session debuggers, and transactional email testing environments.</p>
+            </div>
+            <span class="collection-card-count">3 Products • Filter View →</span>
+          </div>
+
+          <div class="collection-card" onclick="filterByCategory('Analytics')">
+            <div>
+              <div class="collection-card-title">📈 SaaS Growth & Revenue Engine</div>
+              <p class="collection-card-tagline">Real-time Stripe cohort retention, churn forecasting, and high-conversion ad copywriting engines.</p>
+            </div>
+            <span class="collection-card-count">3 Products • Filter View →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FOUNDER DEALS BANNER ================= -->
+    <section class="deals-section" id="deals">
+      <div class="container">
+        <div class="deals-banner-card">
+          <div class="deals-banner-content">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--coral); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;">
+              🎁 Community Perks
+            </div>
+            <h3>Looking for software discounts?</h3>
+            <p>
+              Makers on Launchdock offer exclusive discount promo codes and extended trials for our community. Filter by "Deals Only" or grab codes directly from product pages!
+            </p>
+          </div>
+          <a href="#search-section" class="btn btn-mint" onclick="document.getElementById('dealsOnlyToggle').click();">
+            🏷️ Browse All Deals
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MONETIZATION & PRICING PLANS ================= -->
+    <section class="pricing-section" id="pricing">
+      <div class="container">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto 12px;">
+          <div class="section-eyebrow" style="justify-content: center;">
+            <span>🚀 Monetization & Boosts</span>
+          </div>
+          <h2 class="section-title" style="font-size: 2.2rem; margin-top: 6px;">
+            Clear, Transparent Launch Plans
+          </h2>
+          <p style="margin-top: 10px;">
+            Start free with zero strings attached. Upgrade only when you want accelerated speed, front-page spotlight, and continuous buyer traffic.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Free Queue Tier -->
+          <div class="pricing-card" id="planCardFree">
+            <div>
+              <div class="plan-name">Free Discovery</div>
+              <div class="plan-desc">Perfect for testing the waters and organic community discovery.</div>
+              <div class="plan-price-wrap">
+                <span class="plan-price">$0</span>
+                <span class="plan-period">/ forever</span>
+              </div>
+              <ul class="plan-features">
+                <li class="plan-feature-item"><span class="check">✓</span> Permanent directory listing</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Standard review queue (3-5 days)</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Community upvote eligibility</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Free embed badge generator</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Basic clicks & view counts</li>
+              </ul>
+            </div>
+            <a href="submit.html" class="btn btn-ghost" style="width: 100%; margin-top: 24px;">Submit Free Listing</a>
+          </div>
+
+          <!-- Fast-Track Boost Tier (Popular) -->
+          <div class="pricing-card is-popular" id="planCardFastTrack">
+            <span class="popular-badge">Most Popular for Launches</span>
+            <div>
+              <div class="plan-name">Fast-Track Boost</div>
+              <div class="plan-desc">For makers who need instant traffic, verified SEO backlinks, and rapid exposure.</div>
+              <div class="plan-price-wrap">
+                <span class="plan-price">$19</span>
+                <span class="plan-period">/ one-time launch</span>
+              </div>
+              <ul class="plan-features">
+                <li class="plan-feature-item"><span class="check">✓</span> <strong>Guaranteed 24-Hour Review</strong></li>
+                <li class="plan-feature-item"><span class="check">✓</span> <strong>48-Hour Homepage Top Spotlight</strong></li>
+                <li class="plan-feature-item"><span class="check">✓</span> High-Authority Do-Follow SEO Backlink</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Category Page Priority Pin</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Verified Launch Gold Badge</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Instant +45 Upvote Kickstart</li>
+              </ul>
+            </div>
+            <a href="submit.html" class="btn btn-primary" style="width: 100%; margin-top: 24px;">Launch with Fast-Track ($19)</a>
+          </div>
+
+          <!-- Pro Maker Subscription -->
+          <div class="pricing-card" id="planCardPro">
+            <div>
+              <div class="plan-name">Pro Maker Studio</div>
+              <div class="plan-desc">Continuous growth engine for serial indie hackers and growing SaaS companies.</div>
+              <div class="plan-price-wrap">
+                <span class="plan-price">$29</span>
+                <span class="plan-period">/ month</span>
+              </div>
+              <ul class="plan-features">
+                <li class="plan-feature-item"><span class="check">✓</span> <strong>Unlimited Product Submissions</strong></li>
+                <li class="plan-feature-item"><span class="check">✓</span> Instant Auto-Approval (Zero Wait)</li>
+                <li class="plan-feature-item"><span class="check">✓</span> BetaDock Radar Newsletter Mention (15k readers)</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Advanced Referral & CTR Analytics</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Custom Deal Coupon Highlights</li>
+                <li class="plan-feature-item"><span class="check">✓</span> Priority Customer & Maker Support</li>
+              </ul>
+            </div>
+            <a href="dashboard.html" class="btn btn-ghost" style="width: 100%; margin-top: 24px;">Upgrade to Pro Maker</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= PRODUCT DETAIL MODAL ================= -->
+  <div class="modal-backdrop" id="productModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <button type="button" class="modal-close-btn" id="modalCloseBtn" onclick="closeProductModal()">✕</button>
+      <div id="modalContent">
+        <!-- Injected dynamically by js/app.js openProductModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="logo-wrap" style="margin-bottom: 14px;">
+            <div class="logo-badge" style="width: 32px; height: 32px; font-size: 16px;">🚀</div>
+            <div class="logo-text" style="font-size: 1.2rem;">Beta<span>dock</span></div>
+          </div>
+          <p style="font-size: 0.88rem; max-width: 340px; margin-bottom: 16px;">
+            The go-to launchpad where creators, founders, and indie hackers showcase products, recruit early beta testers, and find paying customers.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">
+            Built for the modern indie web.
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Discover</div>
+          <ul class="footer-links-list">
+            <li><a href="#dock-race">Daily Dock Race</a></li>
+            <li><a href="#directory">Featured AI Tools</a></li>
+            <li><a href="#directory">Developer Utilities</a></li>
+            <li><a href="#deals">Community Deals</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">For Makers</div>
+          <ul class="footer-links-list">
+            <li><a href="submit.html">Submit Your Tool (Free)</a></li>
+            <li><a href="#pricing">Fast-Track Review</a></li>
+            <li><a href="dashboard.html">Embed Badges</a></li>
+            <li><a href="dashboard.html">Maker Analytics</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Stay Updated</div>
+          <p style="font-size: 0.85rem; margin-bottom: 12px;">Get the weekly BetaDock Radar newsletter with top picks.</p>
+          <div style="display: flex; gap: 6px;">
+            <input type="email" placeholder="Your email..." class="form-control" style="font-size: 0.85rem; padding: 8px 12px;" />
+            <button class="btn btn-primary btn-sm" onclick="showToast('Subscribed to BetaDock Radar!', 'success')">Join</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 BetaDock. All rights reserved.</div>
+        <div style="display: flex; gap: 18px;">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Twitter / X</a>
+          <a href="#">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/supabase.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/services/ProductService.js"></script>
+  <script src="js/services/AIService.js"></script>
+  <script src="js/services/CampaignService.js"></script>
+  <script src="js/services/AnalyticsService.js"></script>
+  <script src="js/services/PaymentService.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

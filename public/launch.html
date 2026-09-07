@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Launch Studio & Marketing Platform — BetaDock</title>
+  <meta name="description" content="Submit once. Launch everywhere. AI-powered product intelligence, marketing strategy, multi-channel campaign generation, visual assets, and launch calendar.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+</head>
+<body>
+
+  <!-- ================= SITE HEADER ================= -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo-wrap" id="launchStudioLogo">
+          <div class="logo-badge">🚀</div>
+          <div class="logo-text">Beta<span>dock</span></div>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link"><span class="nav-pillar-tag tag-discover">Discover</span> Products</a></li>
+            <li><a href="index.html#dock-race" class="nav-link">Daily Race</a></li>
+            <li><a href="index.html#collections" class="nav-link">Collections</a></li>
+            <li><a href="launch.html" class="nav-link active"><span class="nav-pillar-tag tag-launch">Launch</span> AI Studio</a></li>
+            <li><a href="dashboard.html" class="nav-link">Command Center</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <div id="headerAuthContainer"></div>
+          <a href="dashboard.html" class="btn btn-ghost btn-sm">Command Center</a>
+          <a href="submit.html" class="btn btn-primary btn-sm">+ Submit Tool</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= LAUNCH STUDIO MAIN ================= -->
+  <main class="launch-studio-wrap">
+    <div class="container">
+      
+      <!-- Studio Header & Value Prop -->
+      <div style="margin-bottom: 24px; text-align: center;">
+        <div class="section-eyebrow" style="justify-content: center; margin-bottom: 6px;">
+          <span>⚡ AI Product Launch Engine</span>
+        </div>
+        <h1 style="font-size: 2.6rem; margin-bottom: 8px;">
+          Submit Once. <span class="highlight">Launch Everywhere.</span>
+        </h1>
+        <p style="font-size: 1.05rem; max-width: 680px; margin: 0 auto;">
+          Transform your product URL into an end-to-end launch machine: AI product intelligence, targeted marketing strategy, multi-channel copy, visual assets, and 7-day schedule.
+        </p>
+      </div>
+
+      <!-- Top URL / Product Switcher Bar -->
+      <div class="studio-top-bar">
+        <div style="display: flex; align-items: center; gap: 12px; flex: 1; flex-wrap: wrap;">
+          <div>
+            <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Select Active Product</label>
+            <select id="studioProductSelect" class="filter-select" style="display: block; margin-top: 4px; min-width: 220px; padding: 10px;">
+              <!-- Populated by launch-studio.js -->
+            </select>
+          </div>
+
+          <div style="flex: 1; min-width: 260px;">
+            <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Or Enter Product URL</label>
+            <div class="product-url-bar" style="margin-top: 4px;">
+              <input type="url" id="studioUrlInput" class="form-control" placeholder="https://mycooltool.io" />
+              <button type="button" class="btn btn-primary btn-sm" id="btnAnalyzeUrl">
+                <span>Analyze & Launch →</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button type="button" class="btn btn-mint btn-sm" id="btnQuickRegenAll">
+            <span>⚡ Regenerate Entire Campaign</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- LIVE CAMPAIGN ACTIVE BROADCAST BAR -->
+      <div class="campaign-status-banner" id="campaignStatusBanner">
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <div class="active-pulse-indicator">
+            <span class="pulse-dot"></span>
+            <strong style="color: var(--mint); font-size: 1rem;">🟢 Social Media Campaign: ACTIVE</strong>
+          </div>
+          <div style="font-size: 0.88rem; color: var(--text-secondary);">
+            Auto-queued across <strong>5 networks</strong> for <span id="activeCampaignProductName" style="color: var(--primary); font-weight: 700;">OmniFlow AI</span>.
+          </div>
+        </div>
+
+        <div class="campaign-quick-broadcasts" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+          <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">1-Click Social Blast:</span>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnBlastX" onclick="broadcastChannel('x')" title="Post to X / Twitter">
+            🐦 Post to X
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnBlastLinkedIn" onclick="broadcastChannel('linkedin')" title="Share on LinkedIn">
+            💼 Share LinkedIn
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnBlastReddit" onclick="broadcastChannel('reddit')" title="Submit to Reddit">
+            🤖 Post Reddit
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnBlastProductHunt" onclick="broadcastChannel('producthunt')" title="Product Hunt Comment">
+            🐱 Product Hunt
+          </button>
+        </div>
+      </div>
+
+      <!-- 5-STAGE WORKFLOW STEPPER -->
+      <div class="launch-stepper">
+        <button type="button" class="step-btn active" data-stage="understand">
+          <span class="step-num">1</span>
+          <span>Understand</span>
+        </button>
+        <button type="button" class="step-btn" data-stage="strategize">
+          <span class="step-num">2</span>
+          <span>Strategize</span>
+        </button>
+        <button type="button" class="step-btn" data-stage="create">
+          <span class="step-num">3</span>
+          <span>Create Copy</span>
+        </button>
+        <button type="button" class="step-btn" data-stage="assets">
+          <span class="step-num">4</span>
+          <span>Marketing Assets</span>
+        </button>
+        <button type="button" class="step-btn" data-stage="calendar">
+          <span class="step-num">5</span>
+          <span>Content Calendar</span>
+        </button>
+      </div>
+
+      <!-- ================= STAGE 1: UNDERSTAND (PRODUCT INTELLIGENCE) ================= -->
+      <div class="studio-stage-panel active" id="stage-understand">
+        <div class="intel-card-panel">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <div class="section-eyebrow">
+                <span>🧠 AI Product Intelligence</span>
+              </div>
+              <h2 style="font-size: 1.8rem; margin-top: 4px;" id="intelProductName">OmniFlow AI</h2>
+              <p id="intelProductTagline" style="font-size: 1rem; color: var(--text-secondary); margin-top: 4px;">
+                Autonomous AI workflows that turn prompt chains into real production apps.
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnReanalyze">🔄 Re-Analyze</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="switchStudioStage('strategize')">Next: Marketing Strategy →</button>
+            </div>
+          </div>
+
+          <!-- 9-Point Breakdown Grid -->
+          <div class="intel-grid">
+            <div class="intel-item">
+              <div class="intel-label"><span>🎯</span> What It Does</div>
+              <div class="intel-value" id="intelWhatItDoes">
+                Orchestrates automated pipeline execution, monitors performance in real time, and turns complex prompt chains into repeatable code.
+              </div>
+            </div>
+
+            <div class="intel-item">
+              <div class="intel-label"><span>👥</span> Target Audience</div>
+              <div class="intel-value" id="intelTargetAudience">
+                Indie makers, solo developers, early-stage SaaS founders, and growth engineers seeking automation.
+              </div>
+            </div>
+
+            <div class="intel-item">
+              <div class="intel-label"><span>⚠️</span> Problem Solved</div>
+              <div class="intel-value" id="intelProblemSolved">
+                Makers waste 15+ hours weekly on disjointed manual tools, high subscription costs, and fragmented distribution.
+              </div>
+            </div>
+
+            <div class="intel-item">
+              <div class="intel-label"><span>⚡</span> Unique Selling Prop (USP)</div>
+              <div class="intel-value" id="intelUSP">
+                Zero-config onboarding with end-to-end continuous automation and direct founder deals.
+              </div>
+            </div>
+
+            <div class="intel-item">
+              <div class="intel-label"><span>📂</span> Category & Pricing</div>
+              <div class="intel-value" id="intelCategoryPricing">
+                Category: AI Tools | Pricing: Freemium ($0 Free / $29 Pro)
+              </div>
+            </div>
+
+            <div class="intel-item">
+              <div class="intel-label"><span>⚔️</span> Key Competitors</div>
+              <div class="intel-value" id="intelCompetitors">
+                Zapier, Make.com, Airtable Automations, LangChain Studio
+              </div>
+            </div>
+
+            <div class="intel-item" style="grid-column: 1 / -1;">
+              <div class="intel-label"><span>💡</span> Suggested Positioning</div>
+              <div class="intel-value" id="intelPositioning" style="font-weight: 600; color: var(--primary);">
+                The lightweight, high-speed alternative built specifically for agile bootstrapped teams who value execution speed over enterprise bloat.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= STAGE 2: STRATEGIZE (AI MARKETING STRATEGY) ================= -->
+      <div class="studio-stage-panel" id="stage-strategize">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div class="section-eyebrow">
+              <span>🎯 Strategy Synthesis</span>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-top: 4px;">AI Marketing Strategy Blueprint</h2>
+            <p style="font-size: 0.95rem;">Audience personas, positioning architecture, and channel priorities.</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="switchStudioStage('create')">
+            Next: Generate Launch Campaign (Copy) →
+          </button>
+        </div>
+
+        <div class="strategy-grid">
+          <!-- Target Audience Box -->
+          <div class="strategy-box">
+            <h3 style="font-size: 1.25rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+              <span>👥 Target Audience Breakdown</span>
+            </h3>
+            
+            <div style="background: #090C12; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 16px; margin-bottom: 14px;">
+              <div style="font-weight: 700; color: var(--cyan); margin-bottom: 4px;">Primary: Bootstrapped Solo Founders</div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">
+                Builders seeking immediate traction without $5k/mo marketing budgets.
+              </p>
+              <div style="font-size: 0.82rem; margin-bottom: 4px;"><strong style="color: var(--coral);">Pain Points:</strong> Buried on giant directories; lack channel-specific copy; slow organic reach.</div>
+              <div style="font-size: 0.82rem;"><strong style="color: var(--mint);">Motivations:</strong> First 100 paying customers, high-authority backlink, honest user feedback.</div>
+            </div>
+
+            <div style="background: #090C12; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 16px;">
+              <div style="font-weight: 700; color: var(--primary); margin-bottom: 4px;">Secondary: Growth Marketers & Tech Freelancers</div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">
+                Agile teams hunting for scalable automation and founder deals.
+              </p>
+              <div style="font-size: 0.82rem;"><strong style="color: var(--mint);">Motivations:</strong> High ROI early adopter channels and viral referral loops.</div>
+            </div>
+          </div>
+
+          <!-- Positioning Matrix Box -->
+          <div class="strategy-box">
+            <h3 style="font-size: 1.25rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+              <span>🧭 Positioning & Messaging Matrix</span>
+            </h3>
+
+            <div style="margin-bottom: 16px;">
+              <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">One-Line Positioning</div>
+              <div style="font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-top: 2px;" id="stratOneLiner">
+                The fastest way to turn AI ideas into profitable automated reality.
+              </div>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Core Value Proposition</div>
+              <p style="font-size: 0.88rem; color: var(--text-main); margin-top: 2px;">
+                Eliminate 80% of launch friction with instant AI workflows and community-backed early adopters.
+              </p>
+            </div>
+
+            <div>
+              <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">Key Messaging Pillars</div>
+              <ul style="font-size: 0.85rem; color: var(--text-secondary); padding-left: 18px; line-height: 1.6;">
+                <li><strong>Speed:</strong> Live in under 60 seconds with zero-friction onboarding.</li>
+                <li><strong>Authentic Traction:</strong> Direct founder deals and verified beta testers.</li>
+                <li><strong>Open & Sovereign:</strong> Zero platform lock-in and developer-friendly APIs.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Channel Strategy & 7-Day Blueprint -->
+        <div class="strategy-box" style="margin-bottom: 30px;">
+          <h3 style="font-size: 1.25rem; margin-bottom: 4px;">📡 Recommended Channel Distribution</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Channels ranked by organic conversion fit for this product profile:</p>
+
+          <div class="channel-recommendations-grid" id="channelStrategyContainer">
+            <!-- Rendered by launch-studio.js -->
+          </div>
+        </div>
+
+        <!-- 7-Day Launch Blueprint -->
+        <div class="strategy-box">
+          <h3 style="font-size: 1.25rem; margin-bottom: 4px;">📅 7-Day Launch Campaign Strategy</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Sequential campaign cadence engineered to build momentum:</p>
+
+          <div class="blueprint-list" id="blueprintListContainer">
+            <!-- Rendered by launch-studio.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= STAGE 3: CREATE (MULTI-CHANNEL CAMPAIGN GENERATOR) ================= -->
+      <div class="studio-stage-panel" id="stage-create">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div class="section-eyebrow">
+              <span>✍️ Campaign Generator</span>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-top: 4px;">Multi-Channel Launch Content</h2>
+            <p style="font-size: 0.95rem;">High-converting copy tailored for 6 major platforms. Edit, copy, regenerate, or save.</p>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <button type="button" class="btn btn-primary" id="btnGenerateFullCampaign">
+              <span>⚡ Generate Launch Campaign</span>
+            </button>
+            <button type="button" class="btn btn-ghost" onclick="switchStudioStage('assets')">
+              Next: Marketing Assets →
+            </button>
+          </div>
+        </div>
+
+        <!-- 6 Multi-Channel Content Cards Grid -->
+        <div class="campaign-cards-grid" id="campaignCardsContainer">
+          <!-- Injected dynamically by launch-studio.js (LinkedIn, X, Instagram, Pinterest, Reddit, Product Hunt) -->
+        </div>
+      </div>
+
+      <!-- ================= STAGE 4: ASSETS (MARKETING ASSETS STUDIO) ================= -->
+      <div class="studio-stage-panel" id="stage-assets">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div class="section-eyebrow">
+              <span>🎨 Marketing Assets Studio</span>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-top: 4px;">Visual Graphics & Creatives</h2>
+            <p style="font-size: 0.95rem;">Ready-to-use branded social cards, launch posters, stories, and ad concepts.</p>
+          </div>
+
+          <button type="button" class="btn btn-primary" onclick="switchStudioStage('calendar')">
+            Next: Content Calendar →
+          </button>
+        </div>
+
+        <div class="assets-studio-grid" id="assetsStudioContainer">
+          <!-- Injected dynamically by launch-studio.js (8 asset previews) -->
+        </div>
+      </div>
+
+      <!-- ================= STAGE 5: CALENDAR (CONTENT CALENDAR & DISTRIBUTE) ================= -->
+      <div class="studio-stage-panel" id="stage-calendar">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div class="section-eyebrow">
+              <span>📅 Content Calendar</span>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-top: 4px;">7-Day Launch Schedule</h2>
+            <p style="font-size: 0.95rem;">Click items to mark completed, edit scheduled content, or view platform timing.</p>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <a href="dashboard.html" class="btn btn-mint">
+              <span>🚀 Open Launch Command Center →</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="calendar-wrap-card">
+          <div class="calendar-days-grid" id="calendarDaysContainer">
+            <!-- Injected dynamically by launch-studio.js (Monday - Sunday) -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 BetaDock. Submit once. Launch everywhere.</div>
+        <div style="display: flex; gap: 18px;">
+          <a href="index.html">Discover</a>
+          <a href="launch.html">AI Studio</a>
+          <a href="dashboard.html">Command Center</a>
+          <a href="submit.html">Submit</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/supabase.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/services/ProductService.js"></script>
+  <script src="js/services/AIService.js"></script>
+  <script src="js/services/CampaignService.js"></script>
+  <script src="js/services/AnalyticsService.js"></script>
+  <script src="js/services/PaymentService.js"></script>
+  <script src="js/launch-studio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

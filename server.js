@@ -50,10 +50,13 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Static File Serving
+  // Static File Serving (check public/ first, then root)
   let filePath = reqPath;
   if (filePath === '/') filePath = '/index.html';
-  const fullPath = path.join(__dirname, filePath);
+  let fullPath = path.join(__dirname, 'public', filePath);
+  if (!fs.existsSync(fullPath)) {
+    fullPath = path.join(__dirname, filePath);
+  }
 
   fs.readFile(fullPath, (err, data) => {
     if (err) {
