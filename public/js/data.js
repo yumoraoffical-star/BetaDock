@@ -1,85 +1,75 @@
-const STORAGE_KEY = 'betadock_products_v1';
-const VOTES_KEY = 'betadock_user_votes_v1';
+const STORAGE_KEY = 'betadock_products_v2';
+const VOTES_KEY = 'betadock_user_votes_v2';
 
 const INITIAL_PRODUCTS = [
   {
-    id: 'ld-1',
-    name: 'OmniFlow AI',
-    tagline: 'Autonomous AI workflows that turn prompt chains into real production apps.',
+    id: 'youmika',
+    name: 'Youmika',
+    tagline: 'Autonomous AI marketing and multi-channel launch engine for makers and startups.',
     category: 'AI Tools',
     icon: '⚡',
-    iconBg: '#3B82F6',
+    iconBg: '#10B981',
     pricing: 'Freemium',
-    url: 'https://omniflow.example.com',
-    upvotes: 384,
+    url: 'https://youmika.site',
+    upvotes: 48,
     rank: 1,
     featured: true,
     isPodium: true,
     deal: {
       hasDeal: true,
-      text: '35% OFF First 3 Months',
-      code: 'DOCK35'
+      text: 'Lifetime Free Starter Tier for Early Founders',
+      code: 'YOUMIKA100'
     },
     testersWanted: true,
     testerSpots: 10,
-    testerClaimed: 7,
-    testerReward: '🎁 Free 6-Month Pro Account ($180 value)',
-    feedbacks: [
-      {
-        user: 'Sahil K.',
-        rating: 5,
-        good: 'The prompt chaining builder works flawlessly without lag.',
-        bad: 'Would love an export button for Docker compose.',
-        date: '2026-09-05'
-      },
-      {
-        user: 'Dev Priya',
-        rating: 4,
-        good: 'Clean dark UI and instant API keys setup.',
-        bad: 'Needs more documentation on Webhook callbacks.',
-        date: '2026-09-04'
-      }
-    ],
-    description: 'OmniFlow AI connects with your APIs, databases, and LLM keys to orchestrate self-healing pipelines in real-time. Built for agile development teams and solo makers.',
-    founder: 'Aryan Sharma',
-    tags: ['AI Agents', 'Automation', 'Workflow', 'Developer'],
-    createdAt: '2026-09-04',
-    stats: { views: 4820, clicks: 1240 }
+    testerClaimed: 3,
+    testerReward: '🎁 Free Pro Tier Access for 6 Months',
+    feedbacks: [],
+    description: 'Youmika automates founder marketing by generating high-converting Twitter hooks, Reddit launch posts, LinkedIn thought-leadership stories, and positioning strategy in under 60 seconds.',
+    founder: 'Abhishek Megwansi',
+    tags: ['AI Marketing', 'Launch', 'SaaS', 'Automation'],
+    createdAt: '2026-09-07',
+    stats: { views: 1840, clicks: 490 }
   },
   {
-    id: 'ld-2',
-    name: 'SaaSmetrics Pro',
-    tagline: 'Stripe analytics and MRR churn forecasting engineered for bootstrapped startups.',
-    category: 'Analytics',
-    icon: '📊',
-    iconBg: '#10B981',
-    pricing: 'Freemium',
-    url: 'https://saasmetrics.example.com',
-    upvotes: 329,
+    id: 'betadock',
+    name: 'BetaDock',
+    tagline: 'Submit once. Launch everywhere. AI-powered product discovery and command center.',
+    category: 'DevTools',
+    icon: '🚀',
+    iconBg: '#F5BA27',
+    pricing: 'Free',
+    url: 'https://betadock.youmika.site',
+    upvotes: 42,
     rank: 2,
     featured: true,
     isPodium: true,
     deal: {
       hasDeal: true,
-      text: 'Extended 30-Day Free Trial',
-      code: 'LAUNCHMETRICS'
+      text: 'Free Listing for Next 100 Founders',
+      code: 'LAUNCHFREE'
     },
-    description: 'Real-time cohort retention, lifetime value predictions, and benchmark comparisons with zero setup required. Connect your Stripe account in 60 seconds.',
-    founder: 'Elena Rostova',
-    tags: ['SaaS', 'Stripe', 'Revenue', 'MRR'],
-    createdAt: '2026-09-03',
-    stats: { views: 3950, clicks: 980 }
+    testersWanted: true,
+    testerSpots: 10,
+    testerClaimed: 4,
+    testerReward: '🎁 Verified Founder Badge on Listing',
+    feedbacks: [],
+    description: 'BetaDock is the next-generation launchpad connecting early-stage makers with genuine beta testers, daily leaderboard competition, and multi-channel AI marketing tools.',
+    founder: 'BetaDock Team',
+    tags: ['Directory', 'ProductHunt', 'Marketing', 'IndieHacker'],
+    createdAt: '2026-09-07',
+    stats: { views: 2450, clicks: 680 }
   },
   {
-    id: 'ld-3',
-    name: 'DocuCraft Studio',
-    tagline: 'Turn markdown notes into interactive documentation sites with instant search.',
+    id: 'cursor',
+    name: 'Cursor',
+    tagline: 'The AI-first code editor built for lightning-fast pair programming and refactoring.',
     category: 'DevTools',
-    icon: '🛠️',
-    iconBg: '#F59E0B',
-    pricing: 'Free',
-    url: 'https://docucraft.example.com',
-    upvotes: 295,
+    icon: '💻',
+    iconBg: '#3B82F6',
+    pricing: 'Freemium',
+    url: 'https://cursor.com',
+    upvotes: 38,
     rank: 3,
     featured: true,
     isPodium: true,
@@ -88,160 +78,136 @@ const INITIAL_PRODUCTS = [
       text: '',
       code: ''
     },
-    description: 'Blazing fast static documentation builder powered by WebAssembly. Includes automatic Algolia search indexation and git-based versioning.',
-    founder: 'Marcus Vance',
-    tags: ['Docs', 'Markdown', 'Open Source', 'DevTools'],
-    createdAt: '2026-09-02',
-    stats: { views: 3100, clicks: 820 }
-  },
-  {
-    id: 'ld-4',
-    name: 'PixelForge UI',
-    tagline: 'Figma-to-code component engine that spits out clean vanilla CSS & React.',
-    category: 'Design',
-    icon: '🎨',
-    iconBg: '#EC4899',
-    pricing: 'Freemium',
-    url: 'https://pixelforge.example.com',
-    upvotes: 218,
-    featured: false,
-    deal: {
-      hasDeal: true,
-      text: '20% Lifetime Discount',
-      code: 'PIXEL20'
-    },
-    testersWanted: true,
-    testerSpots: 10,
-    testerClaimed: 3,
-    testerReward: '🎨 1-Year Free Pro License ($120 value)',
-    feedbacks: [
-      {
-        user: 'Rohit Verma',
-        rating: 5,
-        good: 'Vanilla CSS export is super clean without messy utility classes.',
-        bad: 'Nested auto-layout groups sometimes lose flex basis.',
-        date: '2026-09-02'
-      }
-    ],
-    description: 'Stop hand-coding standard UI components. PixelForge exports atomic, production-ready design tokens and accessible React components directly from Figma frames.',
-    founder: 'Nora Chen',
-    tags: ['Figma', 'UI/UX', 'Design System', 'Frontend'],
+    testersWanted: false,
+    description: 'Cursor is a fork of VS Code with deep AI integration. Chat with your entire codebase, edit multiple lines at once, and generate full features seamlessly.',
+    founder: 'Anysphere',
+    tags: ['AI Code', 'IDE', 'Developer', 'Productivity'],
     createdAt: '2026-09-01',
-    stats: { views: 2450, clicks: 540 }
+    stats: { views: 3200, clicks: 890 }
   },
   {
-    id: 'ld-5',
-    name: 'BugSentry Live',
-    tagline: 'Real-time exception replay and session recording for Next.js & Node apps.',
-    category: 'DevTools',
-    icon: '🐛',
-    iconBg: '#EF4444',
-    pricing: 'Freemium',
-    url: 'https://bugsentry.example.com',
-    upvotes: 194,
-    featured: false,
-    deal: {
-      hasDeal: false,
-      text: '',
-      code: ''
-    },
-    description: 'Watch video replays of user errors before they hit your customer support. Ultra-lightweight script weighing less than 12KB with zero frame drops.',
-    founder: 'David Kim',
-    tags: ['Debugging', 'Monitoring', 'Next.js', 'Telemetry'],
-    createdAt: '2026-08-31',
-    stats: { views: 2100, clicks: 430 }
-  },
-  {
-    id: 'ld-6',
-    name: 'CopyPulse AI',
-    tagline: 'High-converting ad copy and landing page generator trained on $50M in sales.',
-    category: 'Marketing',
-    icon: '✍️',
-    iconBg: '#8B5CF6',
-    pricing: 'Paid',
-    url: 'https://copypulse.example.com',
-    upvotes: 182,
-    featured: true,
-    deal: {
-      hasDeal: true,
-      text: 'Get 50,000 Bonus Words',
-      code: 'LAUNCHBONUS'
-    },
-    description: 'Generate Facebook ads, Google search ads, and persuasive landing page sections tailored to your target niche. Includes A/B test variation suggestions.',
-    founder: 'Sarah Jenkins',
-    tags: ['Copywriting', 'Marketing', 'AI', 'Growth'],
-    createdAt: '2026-08-30',
-    stats: { views: 1890, clicks: 410 }
-  },
-  {
-    id: 'ld-7',
-    name: 'MailHarbor',
-    tagline: 'Transactional email sandbox and API inspector for developers.',
-    category: 'DevTools',
-    icon: '✉️',
-    iconBg: '#06B6D4',
-    pricing: 'Free',
-    url: 'https://mailharbor.example.com',
-    upvotes: 167,
-    featured: false,
-    deal: {
-      hasDeal: false,
-      text: '',
-      code: ''
-    },
-    description: 'Test transactional email templates, inspect spam scores, and preview responsive layouts across 40+ email clients without spamming your real inbox.',
-    founder: 'Vikram Patel',
-    tags: ['Email', 'API', 'Developer', 'Testing'],
-    createdAt: '2026-08-29',
-    stats: { views: 1720, clicks: 390 }
-  },
-  {
-    id: 'ld-8',
-    name: 'FocusOrb',
-    tagline: 'Minimalist Pomodoro timer with dynamic ambient soundscapes and lo-fi beats.',
-    category: 'Productivity',
-    icon: '🎧',
-    iconBg: '#14B8A6',
-    pricing: 'Free',
-    url: 'https://focusorb.example.com',
-    upvotes: 154,
-    featured: false,
-    deal: {
-      hasDeal: false,
-      text: '',
-      code: ''
-    },
-    description: 'Boost your deep work sessions with beautifully synthesized binaural beats, forest rain audio, and intuitive micro-break notifications.',
-    founder: 'Liam O’Connor',
-    tags: ['Productivity', 'Focus', 'Audio', 'Wellness'],
-    createdAt: '2026-08-28',
-    stats: { views: 1540, clicks: 320 }
-  },
-  {
-    id: 'ld-9',
-    name: 'PayFlow Global',
-    tagline: 'Accept crypto, UPI, and global cards with one modular drop-in checkout SDK.',
-    category: 'Fintech',
-    icon: '💳',
+    id: 'perplexity',
+    name: 'Perplexity AI',
+    tagline: 'Where knowledge begins. Conversational AI search engine with live web citations.',
+    category: 'AI Tools',
+    icon: '🔍',
     iconBg: '#6366F1',
     pricing: 'Freemium',
-    url: 'https://payflow.example.com',
-    upvotes: 142,
-    featured: true,
+    url: 'https://perplexity.ai',
+    upvotes: 35,
+    rank: 4,
+    featured: false,
     deal: {
-      hasDeal: true,
-      text: '0% Processing Fees on First $5k',
-      code: 'LAUNCHZERO'
+      hasDeal: false,
+      text: '',
+      code: ''
     },
-    description: 'Localized payment rails for cross-border software creators. Automatic VAT/GST compliance and payouts in 140+ countries.',
-    founder: 'Carlos Mendez',
-    tags: ['Payments', 'Checkout', 'Fintech', 'SaaS'],
-    createdAt: '2026-08-27',
-    stats: { views: 1420, clicks: 290 }
+    testersWanted: false,
+    description: 'Perplexity gives direct answers with trusted sources cited in real-time. Eliminates endless Google link browsing for researchers and builders.',
+    founder: 'Aravind Srinivas',
+    tags: ['Search', 'Research', 'AI', 'Knowledge'],
+    createdAt: '2026-08-30',
+    stats: { views: 2800, clicks: 640 }
+  },
+  {
+    id: 'supabase',
+    name: 'Supabase',
+    tagline: 'The open-source Firebase alternative with PostgreSQL, Auth, and Edge Functions.',
+    category: 'DevTools',
+    icon: '⚡',
+    iconBg: '#10B981',
+    pricing: 'Freemium',
+    url: 'https://supabase.com',
+    upvotes: 31,
+    rank: 5,
+    featured: false,
+    deal: {
+      hasDeal: false,
+      text: '',
+      code: ''
+    },
+    testersWanted: false,
+    description: 'Build backend architectures in minutes with a dedicated Postgres database, authentication, instant REST/GraphQL APIs, and real-time subscriptions.',
+    founder: 'Paul Copplestone',
+    tags: ['Database', 'Postgres', 'Backend', 'OpenSource'],
+    createdAt: '2026-08-25',
+    stats: { views: 2400, clicks: 520 }
+  },
+  {
+    id: 'posthog',
+    name: 'PostHog',
+    tagline: 'Open-source product analytics, session recordings, feature flags, and A/B testing.',
+    category: 'Analytics',
+    icon: '🦔',
+    iconBg: '#EC4899',
+    pricing: 'Freemium',
+    url: 'https://posthog.com',
+    upvotes: 28,
+    rank: 6,
+    featured: false,
+    deal: {
+      hasDeal: false,
+      text: '',
+      code: ''
+    },
+    testersWanted: false,
+    description: 'Understand user behaviors on your SaaS app with high-definition session replays, custom conversion funnels, and automated event tracking.',
+    founder: 'James Hawkins',
+    tags: ['Analytics', 'Product', 'SessionReplay', 'Growth'],
+    createdAt: '2026-08-20',
+    stats: { views: 1980, clicks: 430 }
+  },
+  {
+    id: 'calcom',
+    name: 'Cal.com',
+    tagline: 'Open-source, customizable scheduling infrastructure for founders and teams.',
+    category: 'Productivity',
+    icon: '📅',
+    iconBg: '#F59E0B',
+    pricing: 'Freemium',
+    url: 'https://cal.com',
+    upvotes: 24,
+    rank: 7,
+    featured: false,
+    deal: {
+      hasDeal: false,
+      text: '',
+      code: ''
+    },
+    testersWanted: false,
+    description: 'White-label calendar booking links that integrate with Google Calendar, Zoom, Stripe, and Webhooks. Take control of your daily schedule.',
+    founder: 'Peer Richelsen',
+    tags: ['Calendar', 'Meetings', 'Productivity', 'OpenSource'],
+    createdAt: '2026-08-15',
+    stats: { views: 1650, clicks: 380 }
+  },
+  {
+    id: 'resend',
+    name: 'Resend',
+    tagline: 'The modern email API for developers. Deliver transactional emails with React templates.',
+    category: 'Marketing',
+    icon: '✉️',
+    iconBg: '#8B5CF6',
+    pricing: 'Freemium',
+    url: 'https://resend.com',
+    upvotes: 21,
+    rank: 8,
+    featured: false,
+    deal: {
+      hasDeal: false,
+      text: '',
+      code: ''
+    },
+    testersWanted: false,
+    description: 'Clean REST API and SDKs for sending onboarding emails, password resets, and newsletters with 99.9% inbox deliverability.',
+    founder: 'Zeno Rocha',
+    tags: ['Email', 'Developer', 'API', 'Marketing'],
+    createdAt: '2026-08-10',
+    stats: { views: 1520, clicks: 310 }
   }
 ];
 
-// Initialize Storage if empty
+// Storage helpers
 function getProducts() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (!saved) {
@@ -249,7 +215,8 @@ function getProducts() {
     return INITIAL_PRODUCTS;
   }
   try {
-    return JSON.parse(saved);
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_PRODUCTS;
   } catch (e) {
     return INITIAL_PRODUCTS;
   }
