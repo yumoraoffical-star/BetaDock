@@ -5,10 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="pageTitle">Product Launch | BetaDock</title>
   <meta name="description" id="pageDescription" content="Discover, upvote, and explore verified early products on BetaDock.">
+
+  <!-- Dynamic OpenGraph & Social Cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" id="ogTitle" content="Product Launch | BetaDock">
+  <meta property="og:description" id="ogDescription" content="Discover verified early tech products on BetaDock.">
+  <meta property="og:image" id="ogImage" content="https://betadock.youmika.site/badge.svg">
+  <meta property="og:url" id="ogUrl" content="https://betadock.youmika.site">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" id="twitterTitle" content="Product Launch | BetaDock">
+  <meta name="twitter:description" id="twitterDescription" content="Discover verified early tech products on BetaDock.">
+  <meta name="twitter:image" id="twitterImage" content="https://betadock.youmika.site/badge.svg">
+
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  
   <style>
-    .product-page-wrap { padding: 48px 0 80px; }
+    .product-page-wrap { padding: 36px 0 80px; }
+    
+    .breadcrumb-row {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .breadcrumb-row a {
+      color: var(--cyan);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+    .breadcrumb-row a:hover { text-decoration: underline; }
+
     .product-hero-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -16,6 +48,8 @@
       padding: 36px;
       margin-bottom: 32px;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
     }
     .product-hero-top {
       display: flex;
@@ -32,25 +66,26 @@
       min-width: 280px;
     }
     .product-hero-icon {
-      width: 88px;
-      height: 88px;
-      border-radius: 20px;
+      width: 92px;
+      height: 92px;
+      border-radius: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 42px;
+      font-size: 44px;
       background: #1e293b;
       flex-shrink: 0;
       box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
     .product-hero-title {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 800;
       color: #fff;
       margin: 0 0 8px;
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
     .product-hero-tagline {
       font-size: 1.15rem;
@@ -60,7 +95,7 @@
     }
     .product-hero-actions {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       align-items: center;
       flex-wrap: wrap;
     }
@@ -68,26 +103,33 @@
       background: rgba(245, 186, 39, 0.1);
       border: 2px solid var(--primary);
       color: #fff;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: var(--radius-md);
-      font-weight: 700;
-      font-size: 1.1rem;
+      font-weight: 800;
+      font-size: 1.15rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 10px;
       transition: all 0.2s ease;
     }
-    .btn-upvote-huge:hover {
+    .btn-upvote-huge:hover, .btn-upvote-huge.upvoted {
       background: var(--primary);
       color: #000;
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(245, 186, 39, 0.35);
+      box-shadow: 0 8px 24px rgba(245, 186, 39, 0.4);
+    }
+    .product-badges-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+      align-items: center;
     }
     .product-meta-row {
       display: flex;
-      gap: 16px;
-      margin-top: 24px;
+      gap: 20px;
+      margin-top: 20px;
       padding-top: 20px;
       border-top: 1px solid var(--border-color);
       flex-wrap: wrap;
@@ -124,14 +166,16 @@
     .share-btn:hover { background: #334155; }
     .share-btn-x { background: #000; border-color: #333; }
     .share-btn-wa { background: #059669; border-color: #059669; }
+
     .product-content-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 32px;
     }
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
       .product-content-grid { grid-template-columns: 1fr; }
     }
+
     .section-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -143,7 +187,196 @@
       font-size: 1.25rem;
       color: #fff;
       margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
+
+    /* Screenshots gallery */
+    .gallery-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .screenshot-frame {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: #0f172a;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .screenshot-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      max-height: 440px;
+    }
+
+    /* Features List */
+    .features-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      font-size: 0.98rem;
+      color: var(--text-main);
+    }
+    .feature-item .check-icon {
+      color: var(--mint);
+      font-weight: 900;
+      font-size: 1.1rem;
+    }
+
+    /* Problem Solved Box */
+    .problem-box {
+      background: rgba(239, 68, 68, 0.05);
+      border-left: 4px solid #ef4444;
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 20px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    /* Founder Card */
+    .founder-spotlight-card {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .founder-avatar-lg {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--cyan);
+    }
+    .founder-details h4 {
+      margin: 0 0 4px;
+      font-size: 1.15rem;
+      color: #fff;
+    }
+    .founder-details p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .founder-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+      padding: 12px;
+      background: #0f172a;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .founder-stats-grid .f-stat-val {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .founder-stats-grid .f-stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Comments Section */
+    .comments-wrapper {
+      margin-top: 10px;
+    }
+    .comment-form {
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+    }
+    .comment-textarea {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 0.95rem;
+      resize: vertical;
+      min-height: 80px;
+      outline: none;
+      font-family: inherit;
+    }
+    .comment-textarea:focus {
+      border-color: var(--cyan);
+    }
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .comment-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s;
+    }
+    .comment-card.is-founder-reply {
+      border-color: rgba(245, 186, 39, 0.4);
+      background: rgba(245, 186, 39, 0.03);
+    }
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .comment-author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .comment-author-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    .founder-reply-badge {
+      background: var(--primary);
+      color: #000;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .comment-time {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .comment-body {
+      color: var(--text-main);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
     .badge-code-box {
       background: #0f172a;
       border: 1px solid var(--border-color);
@@ -189,6 +422,15 @@
   <main class="product-page-wrap">
     <div class="container">
       
+      <!-- BREADCRUMB -->
+      <div class="breadcrumb-row">
+        <a href="/">← Back to Discover Directory</a>
+        <span>/</span>
+        <span id="breadcrumbCategory">Category</span>
+        <span>/</span>
+        <span id="breadcrumbName" style="color: #fff;">Product</span>
+      </div>
+
       <!-- HERO CARD -->
       <div class="product-hero-card" id="productHeroContainer">
         <div class="product-hero-top">
@@ -212,10 +454,16 @@
           </div>
         </div>
 
+        <!-- BADGES ROW -->
+        <div class="product-badges-row" id="productBadgesContainer">
+          <!-- Filled dynamically -->
+        </div>
+
         <div class="product-meta-row">
           <div>Category: <strong id="productCategory" class="badge badge-category">AI Tools</strong></div>
           <div>Pricing: <strong id="productPricing" style="color:#fff;">Freemium</strong></div>
           <div>Maker: <strong id="productFounder" style="color:#fff;">Maker</strong></div>
+          <div>Origin: <strong id="productOrigin" style="color:#fff;">Global</strong></div>
           <div>Status: <span style="color:#10b981;">● Active on BetaDock</span></div>
         </div>
 
@@ -231,11 +479,31 @@
 
       <!-- DETAILS GRID -->
       <div class="product-content-grid">
-        <!-- LEFT: DETAILS -->
+        <!-- LEFT COLUMN: CONTENT, GALLERY, FEATURES, COMMENTS -->
         <div class="content-left">
+          
+          <!-- SCREENSHOTS / GALLERY -->
+          <div class="section-card" id="galleryCard" style="display:none;">
+            <h3>📸 Product Screenshots & Demo</h3>
+            <div class="gallery-container" id="galleryContainer"></div>
+          </div>
+
+          <!-- PROBLEM SOLVED -->
+          <div class="section-card" id="problemSolvedCard" style="display:none;">
+            <h3>🎯 The Problem Solved</h3>
+            <div class="problem-box" id="problemSolvedText"></div>
+          </div>
+
+          <!-- CORE FEATURES CHECKLIST -->
+          <div class="section-card" id="featuresCard" style="display:none;">
+            <h3>⚡ Core Capabilities & Features</h3>
+            <ul class="features-checklist" id="featuresList"></ul>
+          </div>
+
+          <!-- ABOUT / DETAILED DESCRIPTION -->
           <div class="section-card">
-            <h3>About the Product</h3>
-            <p id="productDescription" style="line-height:1.7; color:var(--text-secondary); font-size:1.05rem;">
+            <h3>📖 About the Product</h3>
+            <p id="productDescription" style="line-height:1.75; color:var(--text-secondary); font-size:1.05rem;">
               Description loading...
             </p>
           </div>
@@ -252,25 +520,80 @@
           </div>
 
           <!-- BETA TESTERS RECRUITMENT -->
-          <div class="section-card" id="betaTesterCard">
+          <div class="section-card" id="betaTesterCard" style="display:none;">
             <h3>🧪 First 10 Beta Testers Program</h3>
             <p style="color:var(--text-secondary); margin-bottom:16px;">
               The founder is actively recruiting early beta testers in exchange for rewards and lifetime perks.
             </p>
-            <div style="display:flex; justify-content:space-between; margin-bottom:16px; background:#1e293b; padding:12px 18px; border-radius:8px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:16px; background:#0f172a; padding:12px 18px; border-radius:8px;">
               <span>Spots Remaining: <strong id="spotsRemaining" style="color:#10b981;">10 / 10</strong></span>
               <span>Reward: <strong id="testerReward" style="color:#f5ba27;">Free Pro Access</strong></span>
             </div>
             <a href="/submit" class="btn btn-secondary btn-sm">Join Beta Tester Waitlist</a>
           </div>
+
+          <!-- COMMUNITY COMMENTS & FOUNDER REPLIES -->
+          <div class="section-card">
+            <h3>💬 Community Discussion (<span id="commentsCount">0</span>)</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 20px;">
+              Ask questions, leave feedback for the maker, or share your testing experience.
+            </p>
+
+            <div class="comment-form">
+              <textarea id="newCommentInput" class="comment-textarea" placeholder="Leave constructive feedback or congratulate the founder..."></textarea>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+                <span style="font-size:0.8rem; color:var(--text-muted);">Signed in as <strong id="currentUserLabel">Guest</strong></span>
+                <button type="button" class="btn btn-primary btn-sm" onclick="submitComment()">
+                  <span>Post Feedback</span> <span>💬</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="comments-list" id="commentsList">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
         </div>
 
-        <!-- RIGHT: EMBED BADGE & STATS -->
+        <!-- RIGHT COLUMN: FOUNDER SPOTLIGHT, BADGE EMBED, STUDIO -->
         <div class="content-right">
+          
+          <!-- FOUNDER SPOTLIGHT CARD -->
+          <div class="section-card" id="founderCard">
+            <h3>👨‍💻 Maker Spotlight</h3>
+            <div class="founder-spotlight-card">
+              <img src="" alt="Founder" class="founder-avatar-lg" id="founderAvatar" />
+              <div class="founder-details">
+                <h4 id="founderName">Maker</h4>
+                <p id="founderBio">Product Creator & Builder</p>
+                <div id="founderLocation" style="font-size:0.8rem; color:var(--cyan); margin-top:4px;"></div>
+              </div>
+            </div>
+
+            <div class="founder-stats-grid">
+              <div>
+                <div class="f-stat-val" id="founderLaunches">1</div>
+                <div class="f-stat-lbl">Launches</div>
+              </div>
+              <div>
+                <div class="f-stat-val" id="founderUpvotes">0</div>
+                <div class="f-stat-lbl">Total Upvotes</div>
+              </div>
+            </div>
+
+            <div id="founderSocialLinks" style="display:flex; gap:10px; margin-bottom:16px;"></div>
+
+            <a href="#" id="founderProfileLink" class="btn btn-ghost btn-sm" style="width:100%; text-align:center;">
+              View Full Maker Profile →
+            </a>
+          </div>
+
+          <!-- EMBED BADGE & STATS -->
           <div class="section-card">
             <h3>Embed Launch Badge</h3>
             <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:14px;">
-              Show this product is listed on BetaDock on your landing page or GitHub README:
+              Show this product is verified on BetaDock on your landing page or GitHub README:
             </p>
             <div style="text-align:center; padding:16px; background:#0f172a; border-radius:8px; margin-bottom:14px;">
               <span class="badge" style="background:#f5ba27; color:#000; font-weight:800; font-size:0.95rem; padding:8px 16px; border-radius:30px;">
@@ -281,13 +604,15 @@
             <div class="badge-code-box" id="embedSnippet"></div>
           </div>
 
-          <div class="section-card">
-            <h3>Launch With AI</h3>
+          <!-- LAUNCH STUDIO PROMO -->
+          <div class="section-card" style="border-color: rgba(99, 102, 241, 0.4); background: rgba(99, 102, 241, 0.05);">
+            <h3 style="color: var(--cyan);">⚡ Launch With AI</h3>
             <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6;">
-              Want to generate multi-channel marketing campaigns, Reddit pitches, and tweet threads for this product?
+              Generate high-converting multi-channel marketing campaigns, Reddit pitches, and launch tweet threads in 60s.
             </p>
-            <a href="/launch" id="sideLaunchBtn" class="btn btn-primary" style="width:100%; margin-top:12px;">⚡ Launch in Studio</a>
+            <a href="/launch" id="sideLaunchBtn" class="btn btn-primary" style="width:100%; margin-top:12px;">⚡ Open in AI Studio</a>
           </div>
+
         </div>
       </div>
 
@@ -297,7 +622,7 @@
   <!-- ================= SITE FOOTER ================= -->
   <footer class="site-footer" style="margin-top:60px; padding:40px 0; border-top:1px solid var(--border-color); text-align:center; color:var(--text-muted);">
     <div class="container">
-      <p>© 2026 BetaDock — Submit once. Launch everywhere.</p>
+      <p>© 2026 BetaDock — Discover & Launch Next-Gen Tech Products.</p>
     </div>
   </footer>
 
@@ -320,42 +645,247 @@
 
       if (!currentProduct) return;
 
-      document.getElementById('pageTitle').textContent = `${currentProduct.name} — BetaDock Launch`;
+      // 1. Dynamic OpenGraph and Title
+      const fullUrl = window.location.href;
+      document.getElementById('pageTitle').textContent = `${currentProduct.name} — ${currentProduct.tagline} | BetaDock`;
       document.getElementById('pageDescription').content = currentProduct.tagline;
+      document.getElementById('ogTitle').content = `${currentProduct.name} on BetaDock`;
+      document.getElementById('ogDescription').content = currentProduct.tagline;
+      document.getElementById('ogUrl').content = fullUrl;
+      document.getElementById('twitterTitle').content = `${currentProduct.name} on BetaDock`;
+      document.getElementById('twitterDescription').content = currentProduct.tagline;
+
+      // 2. Breadcrumb
+      document.getElementById('breadcrumbCategory').textContent = currentProduct.category;
+      document.getElementById('breadcrumbName').textContent = currentProduct.name;
+
+      // 3. Hero Details
       document.getElementById('productIcon').textContent = currentProduct.icon || '🚀';
-      document.getElementById('productIcon').style.background = currentProduct.iconBg || '#1e293b';
+      document.getElementById('productIcon').style.background = (currentProduct.iconBg || '#1e293b') + '25';
+      document.getElementById('productIcon').style.color = currentProduct.iconBg || '#fff';
       document.getElementById('productName').textContent = currentProduct.name;
       document.getElementById('productTagline').textContent = currentProduct.tagline;
       document.getElementById('productCategory').textContent = currentProduct.category;
-      document.getElementById('productPricing').textContent = currentProduct.pricing;
+      document.getElementById('productPricing').textContent = currentProduct.pricing || 'Freemium';
       document.getElementById('productFounder').textContent = currentProduct.founder || 'Maker';
+      document.getElementById('productOrigin').textContent = currentProduct.originLocation || currentProduct.origin || 'Global';
       document.getElementById('productDescription').textContent = currentProduct.description;
-      document.getElementById('upvoteCount').textContent = currentProduct.upvotes || 1;
+      document.getElementById('upvoteCount').textContent = currentProduct.upvotes || 0;
       document.getElementById('visitSiteBtn').href = currentProduct.url;
+
+      // Check if user has already upvoted
+      const userVotes = typeof getUserVotes === 'function' ? getUserVotes() : [];
+      if (userVotes.includes(currentProduct.id)) {
+        document.getElementById('upvoteBtn').classList.add('upvoted');
+      }
+
+      // Badges
+      const badgesContainer = document.getElementById('productBadgesContainer');
+      let badgesHtml = '';
+      if (currentProduct.origin === 'India' || (currentProduct.originLocation && currentProduct.originLocation.toLowerCase().includes('india'))) {
+        badgesHtml += `<span class="india-badge-chip">🇮🇳 Made in India (${escapeHtml(currentProduct.originLocation || 'India')})</span>`;
+      }
+      if (currentProduct.builderType === 'student') {
+        badgesHtml += `<span class="builder-badge-chip student">🎓 Student Project</span>`;
+      } else if (currentProduct.builderType === 'opensource') {
+        badgesHtml += `<span class="builder-badge-chip oss">🌱 Open Source</span>`;
+      } else if (currentProduct.builderType === 'indie') {
+        badgesHtml += `<span class="builder-badge-chip indie">🚀 Indie Hacker</span>`;
+      } else if (currentProduct.builderType === 'startup') {
+        badgesHtml += `<span class="builder-badge-chip startup">🏢 Startup</span>`;
+      }
+      if (currentProduct.tags) {
+        currentProduct.tags.forEach(t => {
+          badgesHtml += `<span class="tag-item">#${escapeHtml(t.replace('#',''))}</span>`;
+        });
+      }
+      badgesContainer.innerHTML = badgesHtml;
 
       if (currentProduct.featured) {
         document.getElementById('featuredBadge').style.display = 'inline-block';
       }
 
+      // 4. Screenshots Gallery
+      if (currentProduct.screenshots && currentProduct.screenshots.length > 0) {
+        const galleryCard = document.getElementById('galleryCard');
+        const galleryContainer = document.getElementById('galleryContainer');
+        galleryCard.style.display = 'block';
+        galleryContainer.innerHTML = currentProduct.screenshots.map(src => `
+          <div class="screenshot-frame">
+            <img src="${escapeHtml(src)}" alt="${escapeHtml(currentProduct.name)} Screenshot" loading="lazy" />
+          </div>
+        `).join('');
+      }
+
+      // 5. Problem Solved
+      if (currentProduct.problemSolved) {
+        document.getElementById('problemSolvedCard').style.display = 'block';
+        document.getElementById('problemSolvedText').textContent = currentProduct.problemSolved;
+      }
+
+      // 6. Core Features
+      if (currentProduct.features && currentProduct.features.length > 0) {
+        document.getElementById('featuresCard').style.display = 'block';
+        document.getElementById('featuresList').innerHTML = currentProduct.features.map(f => `
+          <li class="feature-item">
+            <span class="check-icon">✓</span>
+            <span>${escapeHtml(f)}</span>
+          </li>
+        `).join('');
+      }
+
+      // 7. Deal Card
       if (currentProduct.deal && currentProduct.deal.hasDeal) {
         document.getElementById('dealCard').style.display = 'block';
         document.getElementById('dealText').textContent = currentProduct.deal.text;
         document.getElementById('dealCode').textContent = currentProduct.deal.code;
       }
 
+      // 8. Beta Testers
+      if (currentProduct.testersWanted) {
+        document.getElementById('betaTesterCard').style.display = 'block';
+        const left = (currentProduct.testerSpots || 10) - (currentProduct.testerClaimed || 0);
+        document.getElementById('spotsRemaining').textContent = `${left} / ${currentProduct.testerSpots || 10}`;
+        document.getElementById('testerReward').textContent = currentProduct.testerReward || 'Free Pro Access';
+      }
+
+      // 9. Founder Spotlight
+      const founderProfile = currentProduct.founderProfile || {};
+      const founderId = currentProduct.founderId || (currentProduct.founder ? currentProduct.founder.toLowerCase().replace(/\s+/g, '-') : 'maker');
+      document.getElementById('founderName').textContent = founderProfile.name || currentProduct.founder || 'Maker';
+      document.getElementById('founderBio').textContent = founderProfile.bio || 'Product Creator building on BetaDock.';
+      document.getElementById('founderAvatar').src = founderProfile.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(currentProduct.founder || 'Maker')}&backgroundColor=6366f1`;
+      document.getElementById('founderLocation').textContent = founderProfile.location ? `📍 ${founderProfile.location}` : '';
+      document.getElementById('founderLaunches').textContent = founderProfile.launchesCount || 1;
+      document.getElementById('founderUpvotes').textContent = founderProfile.upvotesCount || currentProduct.upvotes || 0;
+      document.getElementById('founderProfileLink').href = `founder.html?id=${founderId}`;
+
+      let socialHtml = '';
+      if (founderProfile.twitter) {
+        socialHtml += `<a href="${founderProfile.twitter}" target="_blank" class="share-btn share-btn-x" style="font-size:0.75rem; padding:4px 10px;">𝕏 Profile</a>`;
+      }
+      if (founderProfile.github) {
+        socialHtml += `<a href="${founderProfile.github}" target="_blank" class="share-btn" style="font-size:0.75rem; padding:4px 10px;">GitHub</a>`;
+      }
+      if (founderProfile.website) {
+        socialHtml += `<a href="${founderProfile.website}" target="_blank" class="share-btn" style="font-size:0.75rem; padding:4px 10px;">Website</a>`;
+      }
+      document.getElementById('founderSocialLinks').innerHTML = socialHtml;
+
+      // 10. Comments
+      renderComments();
+
+      // Setup Studio Link
       const studioUrl = `/launch?url=${encodeURIComponent(currentProduct.url)}&name=${encodeURIComponent(currentProduct.name)}&category=${encodeURIComponent(currentProduct.category)}`;
       document.getElementById('launchInStudioBtn').href = studioUrl;
       document.getElementById('sideLaunchBtn').href = studioUrl;
 
       // Setup Social Share Links
-      const pageUrl = encodeURIComponent(window.location.href);
+      const pageUrl = encodeURIComponent(fullUrl);
       const shareText = encodeURIComponent(`Check out ${currentProduct.name} on @BetaDock! ${currentProduct.tagline} 🚀`);
       document.getElementById('shareX').href = `https://twitter.com/intent/tweet?text=${shareText}&url=${pageUrl}`;
       document.getElementById('shareWA').href = `https://api.whatsapp.com/send?text=${shareText}%20${pageUrl}`;
 
       // Embed snippet
-      const badgeHtml = `<a href="${window.location.href}" target="_blank"><img src="https://betadock.youmika.site/badge.svg" alt="${currentProduct.name} on BetaDock" /></a>`;
+      const badgeHtml = `<a href="${fullUrl}" target="_blank"><img src="https://betadock.youmika.site/badge.svg" alt="${currentProduct.name} on BetaDock" /></a>`;
       document.getElementById('embedSnippet').textContent = badgeHtml;
+
+      // Update current user label in comment form
+      if (typeof SupabaseClient !== 'undefined') {
+        const user = SupabaseClient.getUser();
+        if (user) {
+          document.getElementById('currentUserLabel').textContent = user.name;
+        }
+      }
+    }
+
+    function renderComments() {
+      const list = document.getElementById('commentsList');
+      const count = document.getElementById('commentsCount');
+      const comments = currentProduct.comments || [];
+      if (count) count.textContent = comments.length;
+
+      if (comments.length === 0) {
+        list.innerHTML = `
+          <div style="text-align:center; padding: 24px; color: var(--text-muted); font-size: 0.95rem;">
+            No comments yet. Be the first to share your thoughts with the founder! 🚀
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = comments.map(c => `
+        <div class="comment-card ${c.isFounder ? 'is-founder-reply' : ''}">
+          <div class="comment-header">
+            <div class="comment-author-info">
+              <img src="${escapeHtml(c.authorAvatar || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(c.author))}" alt="${escapeHtml(c.author)}" class="comment-author-avatar" />
+              <strong>${escapeHtml(c.author)}</strong>
+              ${c.isFounder ? `<span class="founder-reply-badge">👑 Founder Reply</span>` : ''}
+            </div>
+            <span class="comment-time">${escapeHtml(c.createdAt || 'Recently')}</span>
+          </div>
+          <div class="comment-body">
+            ${escapeHtml(c.content)}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function submitComment() {
+      if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+        if (typeof openAuthModal === 'function') {
+          openAuthModal('Sign in required to leave feedback for founders!', () => {
+            submitComment();
+          });
+        }
+        return;
+      }
+
+      const input = document.getElementById('newCommentInput');
+      const text = input ? input.value.trim() : '';
+      if (!text) {
+        alert('Please enter your feedback before submitting!');
+        return;
+      }
+
+      const user = SupabaseClient.getUser() || { name: 'Maker', email: 'guest@betadock.com' };
+      const isFounder = (user.name && user.name.toLowerCase() === (currentProduct.founder || '').toLowerCase());
+
+      const newComment = {
+        id: 'c_' + Date.now(),
+        author: user.name || 'Anonymous',
+        authorAvatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
+        isFounder: isFounder,
+        content: text,
+        createdAt: 'Just now'
+      };
+
+      if (!currentProduct.comments) currentProduct.comments = [];
+      currentProduct.comments.unshift(newComment);
+
+      // Save locally
+      const products = getProducts();
+      const idx = products.findIndex(p => p.id === currentProduct.id);
+      if (idx !== -1) {
+        products[idx].comments = currentProduct.comments;
+        saveProducts(products);
+      }
+
+      // Sync to Supabase
+      if (typeof SupabaseClient !== 'undefined' && SupabaseClient.createComment) {
+        await SupabaseClient.createComment(currentProduct.id, {
+          user_name: user.name,
+          user_avatar: user.avatar,
+          is_founder: isFounder,
+          content: text
+        });
+      }
+
+      input.value = '';
+      renderComments();
+      if (typeof showToast === 'function') {
+        showToast('Feedback posted successfully! 💬', 'success');
+      }
     }
 
     async function handleUpvote() {
@@ -368,9 +898,34 @@
         }
         return;
       }
-      currentProduct.upvotes = (currentProduct.upvotes || 0) + 1;
+
+      const userVotes = typeof getUserVotes === 'function' ? getUserVotes() : [];
+      const hasVoted = userVotes.includes(currentProduct.id);
+      const upvoteBtn = document.getElementById('upvoteBtn');
+
+      if (hasVoted) {
+        currentProduct.upvotes = Math.max(0, (currentProduct.upvotes || 1) - 1);
+        const nextVotes = userVotes.filter(id => id !== currentProduct.id);
+        saveUserVotes(nextVotes);
+        if (upvoteBtn) upvoteBtn.classList.remove('upvoted');
+        if (typeof showToast === 'function') showToast(`Removed upvote for ${currentProduct.name}`);
+      } else {
+        currentProduct.upvotes = (currentProduct.upvotes || 0) + 1;
+        userVotes.push(currentProduct.id);
+        saveUserVotes(userVotes);
+        if (upvoteBtn) upvoteBtn.classList.add('upvoted');
+        if (typeof showToast === 'function') showToast(`🚀 Upvoted ${currentProduct.name}!`, 'success');
+      }
+
       document.getElementById('upvoteCount').textContent = currentProduct.upvotes;
-      await ProductService.saveProduct(currentProduct);
+      
+      const products = getProducts();
+      const idx = products.findIndex(p => p.id === currentProduct.id);
+      if (idx !== -1) {
+        products[idx].upvotes = currentProduct.upvotes;
+        saveProducts(products);
+      }
+
       if (typeof SupabaseClient !== 'undefined') {
         SupabaseClient.updateUpvotes(currentProduct.id, currentProduct.upvotes);
       }
@@ -378,28 +933,23 @@
 
     function copyLaunchUrl() {
       navigator.clipboard.writeText(window.location.href);
-      alert('Launch link copied to clipboard!');
+      if (typeof showToast === 'function') showToast('Launch link copied to clipboard!', 'success');
+      else alert('Launch link copied to clipboard!');
     }
 
     function copyCoupon() {
       if (currentProduct && currentProduct.deal) {
-        if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
-          if (typeof openAuthModal === 'function') {
-            openAuthModal('Sign in required to copy founder discount codes!', () => {
-              copyCoupon();
-            });
-          }
-          return;
-        }
         navigator.clipboard.writeText(currentProduct.deal.code);
-        alert(`Coupon ${currentProduct.deal.code} copied!`);
+        if (typeof showToast === 'function') showToast(`Coupon ${currentProduct.deal.code} copied!`, 'success');
+        else alert(`Coupon ${currentProduct.deal.code} copied!`);
       }
     }
 
     function copyBadgeCode() {
       const code = document.getElementById('embedSnippet').textContent;
       navigator.clipboard.writeText(code);
-      alert('Embed badge HTML copied!');
+      if (typeof showToast === 'function') showToast('Embed badge HTML copied!', 'success');
+      else alert('Embed badge HTML copied!');
     }
 
     document.addEventListener('DOMContentLoaded', initPage);

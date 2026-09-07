@@ -270,6 +270,9 @@ function showToast(message, type = 'gold') {
 
 let currentCategory = 'all';
 let currentSort = 'trending';
+let currentTrendingTimeframe = 'today';
+let currentGeo = 'all';
+let currentBuilderType = 'all';
 let dealsOnly = false;
 let testersOnly = false;
 let searchQuery = '';
@@ -294,33 +297,43 @@ async function syncWithSupabase() {
   }
 }
 
-// Daily Dock Race Podium (Top 3 Upvoted)
+// Daily Dock Race Podium (Top 3 Upvoted / Trending Today)
 function renderPodiumRace() {
   const podiumContainer = document.getElementById('podiumGrid');
   if (!podiumContainer) return;
 
-  const products = getProducts();
+  const allProducts = getProducts();
+  // Server-side & marketplace integrity: only approved products appear on public leaderboard!
+  const products = allProducts.filter(p => p.status === 'approved');
   const userVotes = getUserVotes();
 
-  // Sort by upvotes descending
-  const sorted = [...products].sort((a, b) => b.upvotes - a.upvotes);
+  // Sort by time-weighted trending velocity for today
+  const sorted = [...products].sort((a, b) => {
+    const scoreA = typeof calculateTrendingScore === 'function' ? calculateTrendingScore(a, 'today') : a.upvotes;
+    const scoreB = typeof calculateTrendingScore === 'function' ? calculateTrendingScore(b, 'today') : b.upvotes;
+    return scoreB - scoreA;
+  });
   const top3 = sorted.slice(0, 3);
 
   podiumContainer.innerHTML = top3.map((product, index) => {
     const rank = index + 1;
     const isUpvoted = userVotes.includes(product.id);
     const rankLabel = rank === 1 ? '🥇 #1 Today' : rank === 2 ? '🥈 #2 Today' : '🥉 #3 Today';
+    const isIndia = product.origin === 'India' || (product.originLocation && product.originLocation.toLowerCase().includes('india'));
 
     return `
-      <div class="podium-card rank-${rank}" onclick="openProductModal('${product.id}')">
-        <span class="rank-badge">${rankLabel}</span>
+      <div class="podium-card rank-${rank}" onclick="window.location.href='product.html?id=${product.id}'">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span class="rank-badge">${rankLabel}</span>
+          ${isIndia ? `<span class="india-badge-chip" title="${escapeHtml(product.originLocation || 'India')}">🇮🇳 Made in India</span>` : ''}
+        </div>
         
         <div class="card-top">
           <div class="product-icon" style="background: ${product.iconBg}22; color: ${product.iconBg}">
             ${product.icon}
           </div>
           <div class="product-info-top">
-            <span class="product-category-tag">${product.category}</span>
+            <span class="product-category-tag">${escapeHtml(product.category)}</span>
             <div class="product-name">${escapeHtml(product.name)}</div>
           </div>
         </div>
@@ -330,11 +343,12 @@ function renderPodiumRace() {
         <div class="card-perks-row">
           ${product.featured ? `<span class="featured-badge">⭐ Featured</span>` : ''}
           ${product.deal && product.deal.hasDeal ? `<span class="deal-badge">🏷️ ${escapeHtml(product.deal.text)}</span>` : ''}
+          <span class="comment-count-pill" style="font-size: 0.76rem; color: var(--text-muted);">💬 ${(product.comments || []).length}</span>
         </div>
 
         <div class="card-footer">
-          <a href="${product.url}" target="_blank" rel="noopener noreferrer" class="visit-link" onclick="handleOutboundClick(event, '${product.id}', '${product.url}')">
-            Visit Website ↗
+          <a href="product.html?id=${product.id}" class="visit-link" onclick="event.stopPropagation()">
+            Launch Page ↗
           </a>
 
           <button type="button" class="upvote-btn ${isUpvoted ? 'upvoted' : ''}" id="vote-btn-podium-${product.id}" onclick="handleVote(event, '${product.id}')">
@@ -353,24 +367,43 @@ function renderDirectory() {
   const countElement = document.getElementById('resultCount');
   if (!grid) return;
 
-  let products = getProducts();
+  const allProducts = getProducts();
+  // Server-Side marketplace integrity: Only approved products are rendered on public directory!
+  let products = allProducts.filter(p => p.status === 'approved');
   const userVotes = getUserVotes();
 
   // Search Filter
   if (searchQuery.trim()) {
     const q = searchQuery.toLowerCase();
     products = products.filter(p => 
-      p.name.toLowerCase().includes(q) ||
-      p.tagline.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
+      (p.name && p.name.toLowerCase().includes(q)) ||
+      (p.tagline && p.tagline.toLowerCase().includes(q)) ||
+      (p.description && p.description.toLowerCase().includes(q)) ||
+      (p.problemSolved && p.problemSolved.toLowerCase().includes(q)) ||
+      (p.founder && p.founder.toLowerCase().includes(q)) ||
       (p.tags && p.tags.some(t => t.toLowerCase().includes(q))) ||
-      p.category.toLowerCase().includes(q)
+      (p.category && p.category.toLowerCase().includes(q))
     );
+  }
+
+  // Geographic Discovery Filter
+  if (currentGeo === 'India') {
+    products = products.filter(p => p.origin === 'India' || (p.originLocation && p.originLocation.toLowerCase().includes('india')));
+  } else if (currentGeo === 'Global') {
+    products = products.filter(p => p.origin === 'Global' || (p.origin && p.origin !== 'India'));
+  }
+
+  // Ecosystem / Builder Persona Filter
+  if (currentBuilderType !== 'all') {
+    products = products.filter(p => (p.builderType || '').toLowerCase() === currentBuilderType.toLowerCase());
   }
 
   // Category Filter
   if (currentCategory !== 'all') {
-    products = products.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase());
+    products = products.filter(p => 
+      (p.category && p.category.toLowerCase() === currentCategory.toLowerCase()) ||
+      (p.tags && p.tags.some(t => t.toLowerCase() === currentCategory.toLowerCase()))
+    );
   }
 
   // Deals Only Filter
@@ -383,17 +416,25 @@ function renderDirectory() {
     products = products.filter(p => p.testersWanted && (p.testerClaimed || 0) < (p.testerSpots || 10));
   }
 
-  // Sort
+  // Time-Weighted Velocity & Sort Engine
   if (currentSort === 'trending') {
-    products.sort((a, b) => b.upvotes - a.upvotes);
+    products.sort((a, b) => {
+      const scoreA = typeof calculateTrendingScore === 'function' ? calculateTrendingScore(a, currentTrendingTimeframe) : a.upvotes;
+      const scoreB = typeof calculateTrendingScore === 'function' ? calculateTrendingScore(b, currentTrendingTimeframe) : b.upvotes;
+      return scoreB - scoreA;
+    });
   } else if (currentSort === 'newest') {
     products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } else if (currentSort === 'upvotes') {
+    products.sort((a, b) => b.upvotes - a.upvotes);
   } else if (currentSort === 'featured') {
     products.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || b.upvotes - a.upvotes);
   }
 
   if (countElement) {
-    countElement.innerHTML = `Showing <strong>${products.length}</strong> products`;
+    const geoLabel = currentGeo === 'India' ? ' (🇮🇳 Made in India)' : currentGeo === 'Global' ? ' (🌍 Global)' : '';
+    const ecoLabel = currentBuilderType !== 'all' ? ` [${currentBuilderType}]` : '';
+    countElement.innerHTML = `Showing <strong>${products.length}</strong> products${geoLabel}${ecoLabel}`;
   }
 
   if (products.length === 0) {
@@ -410,8 +451,20 @@ function renderDirectory() {
 
   grid.innerHTML = products.map(product => {
     const isUpvoted = userVotes.includes(product.id);
+    const isIndia = product.origin === 'India' || (product.originLocation && product.originLocation.toLowerCase().includes('india'));
+    const commentCount = (product.comments || []).length;
+
     return `
-      <div class="product-card ${product.featured ? 'is-featured' : ''}" onclick="openProductModal('${product.id}')">
+      <div class="product-card ${product.featured ? 'is-featured' : ''}" onclick="window.location.href='product.html?id=${product.id}'">
+        <!-- Badges Row -->
+        <div class="product-card-top-badges">
+          ${isIndia ? `<span class="india-badge-chip">🇮🇳 Made in India${product.originLocation ? ` · ${escapeHtml(product.originLocation)}` : ''}</span>` : ''}
+          ${product.builderType === 'student' ? `<span class="builder-badge-chip student">🎓 Student Project</span>` : ''}
+          ${product.builderType === 'opensource' ? `<span class="builder-badge-chip oss">🌱 Open Source</span>` : ''}
+          ${product.builderType === 'indie' ? `<span class="builder-badge-chip indie">🚀 Indie Hacker</span>` : ''}
+          ${product.builderType === 'startup' ? `<span class="builder-badge-chip startup">🏢 Startup</span>` : ''}
+        </div>
+
         <div class="product-card-header">
           <div class="product-icon" style="background: ${product.iconBg}22; color: ${product.iconBg}">
             ${product.icon}
@@ -422,8 +475,8 @@ function renderDirectory() {
               ${product.featured ? `<span class="featured-badge" style="font-size:0.65rem;">Featured</span>` : ''}
             </div>
             <div class="product-card-meta">
-              <span class="category-badge-chip">${product.category}</span>
-              <span class="pricing-badge-chip">${product.pricing}</span>
+              <span class="category-badge-chip">${escapeHtml(product.category)}</span>
+              <span class="pricing-badge-chip">${escapeHtml(product.pricing)}</span>
             </div>
           </div>
         </div>
@@ -433,6 +486,7 @@ function renderDirectory() {
         <div class="product-card-tags">
           ${(product.tags || []).slice(0, 3).map(tag => `<span class="tag-item">#${escapeHtml(tag)}</span>`).join('')}
           ${product.deal && product.deal.hasDeal ? `<span class="deal-badge">🏷️ ${escapeHtml(product.deal.text)}</span>` : ''}
+          ${commentCount > 0 ? `<span class="comment-count-chip">💬 ${commentCount}</span>` : ''}
           ${product.testersWanted ? `
             <span class="tester-spot-badge">
               🎯 ${product.testerClaimed || 0}/${product.testerSpots || 10} Testers
@@ -453,9 +507,14 @@ function renderDirectory() {
         ` : ''}
 
         <div class="card-footer">
-          <a href="${product.url}" target="_blank" rel="noopener noreferrer" class="visit-link" onclick="handleOutboundClick(event, '${product.id}', '${product.url}')">
-            Visit ↗
-          </a>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <a href="product.html?id=${product.id}" class="visit-link" onclick="event.stopPropagation()">
+              Launch Page ↗
+            </a>
+            <a href="${product.url}" target="_blank" rel="noopener noreferrer" class="visit-link-external" onclick="handleOutboundClick(event, '${product.id}', '${product.url}')" title="Direct Site">
+              Site ↗
+            </a>
+          </div>
 
           <button type="button" class="upvote-btn ${isUpvoted ? 'upvoted' : ''}" id="vote-btn-grid-${product.id}" onclick="handleVote(event, '${product.id}')">
             <span class="upvote-arrow">▲</span>
@@ -497,6 +556,51 @@ function setupSearchAndFilters() {
   const dealsToggle = document.getElementById('dealsOnlyToggle');
   const testersToggle = document.getElementById('testersOnlyToggle');
   const categoryPills = document.querySelectorAll('.filter-pill');
+
+  // 1. Geographic Discovery Tabs (All, Made in India, Global)
+  const geoTabs = document.querySelectorAll('#geoTabsContainer .geo-tab-btn');
+  geoTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      geoTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentGeo = tab.getAttribute('data-geo') || 'all';
+      renderDirectory();
+    });
+  });
+
+  // 2. Ecosystem Chips (Student Builders, Indie Hackers, Startups, Open Source)
+  const ecoChips = document.querySelectorAll('#ecoChipsContainer .eco-chip-btn');
+  ecoChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const selected = chip.getAttribute('data-builder');
+      if (currentBuilderType === selected) {
+        currentBuilderType = 'all';
+        chip.classList.remove('active');
+      } else {
+        ecoChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentBuilderType = selected;
+      }
+      renderDirectory();
+    });
+  });
+
+  // 3. Trending Timeframe Tabs (Today, Week, All-Time, Recent)
+  const trendingTabs = document.querySelectorAll('#trendingTabsContainer .trending-tab-btn');
+  trendingTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      trendingTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentTrendingTimeframe = tab.getAttribute('data-timeframe') || 'today';
+      if (currentSort === 'trending') {
+        renderDirectory();
+      } else {
+        currentSort = 'trending';
+        if (sortSelect) sortSelect.value = 'trending';
+        renderDirectory();
+      }
+    });
+  });
 
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -554,8 +658,12 @@ function setupSearchAndFilters() {
 
 function resetFilters() {
   currentCategory = 'all';
+  currentGeo = 'all';
+  currentBuilderType = 'all';
+  currentTrendingTimeframe = 'today';
   searchQuery = '';
   dealsOnly = false;
+  testersOnly = false;
   currentSort = 'trending';
 
   const searchInput = document.getElementById('directorySearchInput');
@@ -563,6 +671,18 @@ function resetFilters() {
 
   const dealsToggle = document.getElementById('dealsOnlyToggle');
   if (dealsToggle) dealsToggle.classList.remove('active');
+
+  const testersToggle = document.getElementById('testersOnlyToggle');
+  if (testersToggle) testersToggle.classList.remove('active');
+
+  const geoTabs = document.querySelectorAll('#geoTabsContainer .geo-tab-btn');
+  geoTabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-geo') === 'all'));
+
+  const ecoChips = document.querySelectorAll('#ecoChipsContainer .eco-chip-btn');
+  ecoChips.forEach(c => c.classList.remove('active'));
+
+  const trendingTabs = document.querySelectorAll('#trendingTabsContainer .trending-tab-btn');
+  trendingTabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-timeframe') === 'today'));
 
   const categoryPills = document.querySelectorAll('.filter-pill');
   categoryPills.forEach(p => {
@@ -1142,12 +1262,18 @@ function setupFormSubmission() {
     const url = document.getElementById('productUrl').value.trim();
     const tagline = document.getElementById('productTagline').value.trim();
     const category = document.getElementById('productCategory').value;
-    const desc = document.getElementById('productDesc').value.trim();
-    const icon = document.getElementById('productIcon').value.trim() || '🚀';
-    const tagsRaw = document.getElementById('productTags').value.trim();
-    const founder = document.getElementById('founderName').value.trim() || 'Anonymous Maker';
-    const dealText = document.getElementById('dealText').value.trim();
-    const dealCode = document.getElementById('dealCode').value.trim();
+    const desc = document.getElementById('productDesc')?.value.trim() || '';
+    const origin = document.getElementById('productOriginSelect')?.value || 'India';
+    const originLocation = document.getElementById('productOriginLocation')?.value.trim() || (origin === 'India' ? 'India' : 'Global');
+    const builderType = document.getElementById('productBuilderTypeSelect')?.value || 'indie';
+    const problemSolved = document.getElementById('productProblemSolved')?.value.trim() || '';
+    const rawFeatures = document.getElementById('productFeatures')?.value || '';
+    const features = rawFeatures.split('\n').map(f => f.trim()).filter(Boolean);
+    const icon = document.getElementById('productIcon')?.value.trim() || '🚀';
+    const tagsRaw = document.getElementById('productTags')?.value.trim() || '';
+    const founder = document.getElementById('founderName')?.value.trim() || 'Anonymous Maker';
+    const dealText = document.getElementById('dealText')?.value.trim() || '';
+    const dealCode = document.getElementById('dealCode')?.value.trim() || '';
 
     if (!name || !url || !tagline) {
       showToast('Please fill in all required fields!', 'gold');
@@ -1158,6 +1284,7 @@ function setupFormSubmission() {
     const isFeatured = selectedTier === 'fast-track' || selectedTier === 'pro';
     const enableTesters = document.getElementById('enableTestersCheckbox')?.checked || false;
     const testerReward = document.getElementById('testerRewardInput')?.value.trim() || '🎁 Free Pro Account Access';
+    const founderId = founder.toLowerCase().replace(/\s+/g, '-');
 
     const newProduct = {
       id: `ld-${Date.now()}`,
@@ -1166,11 +1293,30 @@ function setupFormSubmission() {
       tagline,
       category,
       description: desc || tagline,
+      problemSolved,
+      features,
+      screenshots: [],
       icon,
       iconBg: '#F5BA27',
       pricing: 'Freemium',
       upvotes: isFeatured ? 45 : 1, // fast-track kickstart
       featured: isFeatured,
+      status: 'pending', // Server-side admin approval workflow: pending until reviewed!
+      origin,
+      originLocation,
+      builderType,
+      founder,
+      founderId,
+      founderProfile: {
+        id: founderId,
+        name: founder,
+        avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(founder)}&backgroundColor=6366f1`,
+        bio: desc || tagline,
+        location: originLocation,
+        isIndia: origin === 'India',
+        launchesCount: 1,
+        upvotesCount: isFeatured ? 45 : 1
+      },
       deal: {
         hasDeal: Boolean(dealText && dealCode),
         text: dealText,
@@ -1181,12 +1327,12 @@ function setupFormSubmission() {
       testerClaimed: 0,
       testerReward: enableTesters ? testerReward : '',
       feedbacks: [],
-      founder,
       tags,
       tier: selectedTier || (isFeatured ? 'fast-track' : 'free'),
       promoted: false,
       createdAt: new Date().toISOString().split('T')[0],
-      stats: { views: 1, clicks: 0 }
+      stats: { views: 1, clicks: 0 },
+      comments: []
     };
 
     const products = getProducts();
@@ -1198,6 +1344,13 @@ function setupFormSubmission() {
       SupabaseClient.createProduct(newProduct);
     }
 
+    // Call serverless endpoint /api/products/submit
+    fetch('/api/products/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newProduct)
+    }).catch(err => console.warn('Local API submit notice:', err.message));
+
     // Send instant mobile alert to Admin (Telegram / Discord webhook)
     if (typeof NotificationService !== 'undefined') {
       NotificationService.sendLaunchAlert(newProduct);
@@ -1206,7 +1359,7 @@ function setupFormSubmission() {
     // Save as maker's active submission for dashboard
     localStorage.setItem('betadock_maker_last_product', JSON.stringify(newProduct));
 
-    showToast('🎉 Product submitted! Opening AI Launch Studio...', 'success');
+    showToast('🎉 Submitted! Status: PENDING Admin Review. Opening AI Launch Studio...', 'success');
 
     setTimeout(() => {
       window.location.href = `launch.html?id=${newProduct.id}`;

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Moderation & Approval | BetaDock</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+  
+  <style>
+    .admin-layout { padding: 40px 0 80px; }
+    
+    .admin-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .admin-title-wrap h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .admin-title-wrap p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .admin-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .admin-stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .admin-stat-card .val {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .admin-stat-card .lbl {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .admin-stat-card.pending .val { color: var(--primary); }
+    .admin-stat-card.approved .val { color: var(--mint); }
+    .admin-stat-card.rejected .val { color: var(--coral); }
+
+    .admin-tabs-row {
+      display: flex;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 14px;
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+    .admin-tab-btn {
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .admin-tab-btn:hover {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+    .admin-tab-btn.active {
+      background: var(--cyan);
+      color: #000;
+      border-color: var(--cyan);
+    }
+
+    .moderation-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mod-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: border-color 0.2s;
+    }
+    .mod-card.status-pending {
+      border-left: 4px solid var(--primary);
+    }
+    .mod-card.status-approved {
+      border-left: 4px solid var(--mint);
+    }
+    .mod-card.status-rejected {
+      border-left: 4px solid var(--coral);
+    }
+
+    .mod-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .mod-prod-main {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .mod-prod-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: #1e293b;
+      flex-shrink: 0;
+    }
+    .mod-prod-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mod-prod-tagline {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .mod-status-pill {
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status-pill-pending { background: rgba(245, 186, 39, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+    .status-pill-approved { background: rgba(34, 197, 94, 0.15); color: var(--mint); border: 1px solid var(--mint); }
+    .status-pill-rejected { background: rgba(239, 68, 68, 0.15); color: var(--coral); border: 1px solid var(--coral); }
+    .status-pill-revision { background: rgba(56, 189, 248, 0.15); color: var(--cyan); border: 1px solid var(--cyan); }
+
+    .mod-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+    }
+    .mod-detail-item strong {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .mod-detail-item span {
+      color: #fff;
+    }
+
+    .mod-problem-box {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .mod-actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+    }
+    .mod-actions-left {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn-approve {
+      background: var(--mint);
+      color: #000;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      transition: opacity 0.2s;
+    }
+    .btn-approve:hover { opacity: 0.9; }
+    .btn-reject {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--coral);
+      color: var(--coral);
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      transition: background 0.2s;
+    }
+    .btn-reject:hover { background: rgba(239, 68, 68, 0.3); }
+    .btn-revision {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      color: var(--cyan);
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+    .btn-revision:hover { background: #334155; }
+  </style>
+</head>
+<body>
+
+  <!-- ================= SITE HEADER ================= -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo-wrap">
+          <div class="logo-badge">🛡️</div>
+          <div class="logo-text">Beta<span>dock Admin</span></div>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li><a href="/" class="nav-link"><span class="nav-pillar-tag tag-discover">Discover</span> Marketplace</a></li>
+            <li><a href="/launch" class="nav-link"><span class="nav-pillar-tag tag-launch">Launch</span> Studio</a></li>
+            <li><a href="/admin" class="nav-link active">Moderation Queue</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <a href="/" class="btn btn-ghost btn-sm">← Back to Site</a>
+          <button class="btn btn-primary btn-sm" onclick="fetchProducts()">🔄 Refresh</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="admin-layout">
+    <div class="container">
+      
+      <!-- HEADER BAR -->
+      <div class="admin-header-bar">
+        <div class="admin-title-wrap">
+          <h1>Product Moderation & Approval Engine</h1>
+          <p>Review submitted tools before they appear on the public directory. Protect quality & enforce guidelines.</p>
+        </div>
+        <div style="font-size:0.85rem; color:var(--text-muted);">
+          Workflow: <strong style="color:var(--primary);">SUBMITTED</strong> → <strong style="color:var(--cyan);">PENDING</strong> → <strong style="color:var(--mint);">APPROVED & LIVE</strong>
+        </div>
+      </div>
+
+      <!-- STATS STRIP -->
+      <div class="admin-stats-strip">
+        <div class="admin-stat-card pending">
+          <div class="val" id="statPendingCount">0</div>
+          <div class="lbl">Pending Review</div>
+        </div>
+        <div class="admin-stat-card approved">
+          <div class="val" id="statApprovedCount">0</div>
+          <div class="lbl">Live & Approved</div>
+        </div>
+        <div class="admin-stat-card rejected">
+          <div class="val" id="statRejectedCount">0</div>
+          <div class="lbl">Rejected / Revision</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="val" id="statTotalCount">0</div>
+          <div class="lbl">Total Submissions</div>
+        </div>
+      </div>
+
+      <!-- TABS ROW -->
+      <div class="admin-tabs-row" id="adminTabs">
+        <button type="button" class="admin-tab-btn active" data-filter="pending" onclick="setTab('pending')">
+          <span>⏳ Pending Review</span>
+          <span class="badge" id="tabBadgePending" style="background:var(--primary); color:#000;">0</span>
+        </button>
+        <button type="button" class="admin-tab-btn" data-filter="approved" onclick="setTab('approved')">
+          <span>✅ Live & Approved</span>
+          <span class="badge" id="tabBadgeApproved" style="background:var(--mint); color:#000;">0</span>
+        </button>
+        <button type="button" class="admin-tab-btn" data-filter="rejected" onclick="setTab('rejected')">
+          <span>❌ Rejected</span>
+          <span class="badge" id="tabBadgeRejected">0</span>
+        </button>
+        <button type="button" class="admin-tab-btn" data-filter="all" onclick="setTab('all')">
+          <span>✨ All Products</span>
+          <span class="badge" id="tabBadgeAll">0</span>
+        </button>
+      </div>
+
+      <!-- CARDS LIST -->
+      <div class="moderation-cards-list" id="moderationList">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/services/ProductService.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let allProducts = [];
+    let currentTab = 'pending';
+
+    async function fetchProducts() {
+      allProducts = await ProductService.getAllProducts();
+      
+      // Try to fetch from serverless endpoint /api/admin if available
+      try {
+        const res = await fetch('/api/admin');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.products && data.products.length > 0) {
+            // merge cloud products
+            const ids = new Set(allProducts.map(p => p.id));
+            data.products.forEach(p => {
+              if (!ids.has(p.id)) allProducts.push(p);
+            });
+          }
+        }
+      } catch (e) {
+        console.warn('Local /api/admin endpoint check:', e.message);
+      }
+
+      updateStats();
+      renderList();
+    }
+
+    function updateStats() {
+      const pending = allProducts.filter(p => p.status === 'pending').length;
+      const approved = allProducts.filter(p => (p.status || 'approved') === 'approved').length;
+      const rejected = allProducts.filter(p => p.status === 'rejected' || p.status === 'needs_revision').length;
+
+      document.getElementById('statPendingCount').textContent = pending;
+      document.getElementById('statApprovedCount').textContent = approved;
+      document.getElementById('statRejectedCount').textContent = rejected;
+      document.getElementById('statTotalCount').textContent = allProducts.length;
+
+      document.getElementById('tabBadgePending').textContent = pending;
+      document.getElementById('tabBadgeApproved').textContent = approved;
+      document.getElementById('tabBadgeRejected').textContent = rejected;
+      document.getElementById('tabBadgeAll').textContent = allProducts.length;
+    }
+
+    function setTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('#adminTabs .admin-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-filter') === tab);
+      });
+      renderList();
+    }
+
+    function renderList() {
+      const container = document.getElementById('moderationList');
+      let filtered = allProducts;
+
+      if (currentTab === 'pending') {
+        filtered = allProducts.filter(p => p.status === 'pending');
+      } else if (currentTab === 'approved') {
+        filtered = allProducts.filter(p => (p.status || 'approved') === 'approved');
+      } else if (currentTab === 'rejected') {
+        filtered = allProducts.filter(p => p.status === 'rejected' || p.status === 'needs_revision');
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="padding: 48px; text-align: center; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+            <div style="font-size: 3rem; margin-bottom: 12px;">🎉</div>
+            <h3>No products found in this queue</h3>
+            <p style="color: var(--text-secondary); margin-top: 6px;">All items are handled or no submissions match the current tab filter.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => {
+        const status = p.status || 'approved';
+        const isIndia = p.origin === 'India' || (p.originLocation && p.originLocation.toLowerCase().includes('india'));
+        
+        let statusPill = '';
+        if (status === 'pending') statusPill = `<span class="mod-status-pill status-pill-pending">⏳ Pending Review</span>`;
+        else if (status === 'approved') statusPill = `<span class="mod-status-pill status-pill-approved">✅ Approved & Live</span>`;
+        else if (status === 'rejected') statusPill = `<span class="mod-status-pill status-pill-rejected">❌ Rejected</span>`;
+        else statusPill = `<span class="mod-status-pill status-pill-revision">🔄 Needs Revision</span>`;
+
+        return `
+          <div class="mod-card status-${status}" id="mod-card-${p.id}">
+            <div class="mod-top-row">
+              <div class="mod-prod-main">
+                <div class="mod-prod-icon" style="background: ${(p.iconBg || '#1e293b')}25; color: ${p.iconBg || '#fff'}">
+                  ${p.icon || '🚀'}
+                </div>
+                <div>
+                  <h3 class="mod-prod-title">
+                    <span>${escapeHtml(p.name)}</span>
+                    ${isIndia ? `<span class="india-badge-chip" style="font-size:0.75rem;">🇮🇳 India</span>` : ''}
+                    ${p.builderType === 'student' ? `<span class="builder-badge-chip student" style="font-size:0.75rem;">🎓 Student</span>` : ''}
+                  </h3>
+                  <p class="mod-prod-tagline">${escapeHtml(p.tagline)}</p>
+                </div>
+              </div>
+
+              <div>
+                ${statusPill}
+              </div>
+            </div>
+
+            <div class="mod-details-grid">
+              <div class="mod-detail-item">
+                <strong>Category & Pricing</strong>
+                <span>${escapeHtml(p.category)} · ${escapeHtml(p.pricing || 'Freemium')}</span>
+              </div>
+              <div class="mod-detail-item">
+                <strong>Maker / Founder</strong>
+                <span>${escapeHtml(p.founder || 'Maker')} (${escapeHtml(p.originLocation || p.origin || 'Global')})</span>
+              </div>
+              <div class="mod-detail-item">
+                <strong>Submitted On</strong>
+                <span>${escapeHtml(p.createdAt || 'Recently')}</span>
+              </div>
+              <div class="mod-detail-item">
+                <strong>Target Website</strong>
+                <span><a href="${p.url}" target="_blank" rel="noopener" style="color:var(--cyan); text-decoration:underline;">${escapeHtml(p.url)} ↗</a></span>
+              </div>
+            </div>
+
+            ${p.problemSolved ? `
+              <div class="mod-problem-box">
+                <strong style="color:#fff; display:block; margin-bottom:4px;">🎯 Problem Solved:</strong>
+                ${escapeHtml(p.problemSolved)}
+              </div>
+            ` : ''}
+
+            <div class="mod-actions-row">
+              <div class="mod-actions-left">
+                <a href="product.html?id=${p.id}" target="_blank" class="btn btn-ghost btn-sm">
+                  Preview Launch Page ↗
+                </a>
+              </div>
+
+              <div style="display:flex; gap:10px;">
+                ${status !== 'approved' ? `
+                  <button type="button" class="btn-approve" onclick="moderateProduct('${p.id}', 'approve')">
+                    <span>✓ Approve & Make Live</span>
+                  </button>
+                ` : ''}
+
+                ${status !== 'rejected' ? `
+                  <button type="button" class="btn-reject" onclick="moderateProduct('${p.id}', 'reject')">
+                    <span>✕ Reject</span>
+                  </button>
+                ` : ''}
+
+                <button type="button" class="btn-revision" onclick="moderateProduct('${p.id}', 'request_changes')">
+                  <span>🔄 Request Revision</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function moderateProduct(productId, action) {
+      const prod = allProducts.find(p => p.id === productId);
+      if (!prod) return;
+
+      if (action === 'approve') {
+        prod.status = 'approved';
+        prod.approvedAt = new Date().toISOString();
+      } else if (action === 'reject') {
+        const reason = prompt('Optional rejection reason (shown to maker):', 'Website URL is inaccessible or lacks core features');
+        prod.status = 'rejected';
+        prod.moderationNotes = reason || '';
+      } else if (action === 'request_changes') {
+        const notes = prompt('What changes should the founder make?', 'Please provide real screenshots and working demo link');
+        prod.status = 'needs_revision';
+        prod.moderationNotes = notes || '';
+      }
+
+      // Save locally
+      saveProducts(allProducts);
+
+      // Call serverless API if available
+      try {
+        await fetch('/api/admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId, action, notes: prod.moderationNotes })
+        });
+      } catch (e) {
+        console.warn('Cloud moderation sync fallback to local storage');
+      }
+
+      if (typeof showToast === 'function') {
+        showToast(`Product ${prod.name} marked as ${prod.status.toUpperCase()}!`, 'success');
+      } else {
+        alert(`Product ${prod.name} marked as ${prod.status.toUpperCase()}!`);
+      }
+
+      updateStats();
+      renderList();
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchProducts);
+  </script>
+</body>
+</html>

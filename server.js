@@ -23,6 +23,7 @@ loadEnv();
 // Import API Handlers
 const analyzeHandler = require('./api/analyze.js');
 const notifyHandler = require('./api/notify.js');
+const adminHandler = require('./api/admin.js');
 
 const PORT = process.env.PORT || 4173;
 const MIME_TYPES = {
@@ -47,6 +48,11 @@ const server = http.createServer((req, res) => {
 
   if (reqPath === '/api/notify') {
     notifyHandler(req, res);
+    return;
+  }
+
+  if (reqPath.startsWith('/api/admin') || reqPath === '/api/products/submit') {
+    adminHandler(req, res);
     return;
   }
 

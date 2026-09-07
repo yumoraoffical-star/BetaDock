@@ -117,12 +117,19 @@ const SupabaseClient = {
         tagline: item.tagline,
         category: item.category,
         description: item.description,
+        problemSolved: item.problem_solved || '',
+        features: item.features || [],
+        screenshots: item.screenshots || [],
         url: item.url,
         icon: item.icon || '🚀',
         iconBg: item.icon_bg || '#F5BA27',
         pricing: item.pricing || 'Freemium',
         upvotes: item.upvotes || 0,
         featured: item.featured || false,
+        status: item.status || 'approved',
+        origin: item.origin || 'Global',
+        originLocation: item.origin_location || '',
+        builderType: item.builder_type || 'indie',
         deal: {
           hasDeal: item.deal_has || false,
           text: item.deal_text || '',
@@ -134,11 +141,13 @@ const SupabaseClient = {
         testerReward: item.tester_reward || '',
         feedbacks: item.feedbacks || [],
         founder: item.founder || 'Maker',
+        founderId: item.founder_id || '',
         tags: item.tags || [],
         tier: item.tier || (item.featured ? 'fast-track' : 'free'),
         promoted: item.promoted || false,
         createdAt: item.created_at ? item.created_at.split('T')[0] : '2026-09-06',
-        stats: item.stats || { views: 1, clicks: 0 }
+        stats: item.stats || { views: 1, clicks: 0 },
+        comments: []
       }));
     } catch (err) {
       console.warn('Network error reaching Supabase:', err);
@@ -146,7 +155,7 @@ const SupabaseClient = {
     }
   },
 
-  // Insert a new product into Supabase
+  // Insert a new product into Supabase (status defaults to pending for moderation)
   async createProduct(product) {
     try {
       const payload = {
@@ -155,6 +164,9 @@ const SupabaseClient = {
         tagline: product.tagline,
         category: product.category,
         description: product.description,
+        problem_solved: product.problemSolved || '',
+        features: product.features || [],
+        screenshots: product.screenshots || [],
         url: product.url,
         icon: product.icon,
         icon_bg: product.iconBg || '#F5BA27',
@@ -162,6 +174,10 @@ const SupabaseClient = {
         upvotes: product.upvotes || 1,
         featured: product.featured || false,
         tier: product.tier || 'free',
+        status: product.status || 'pending',
+        origin: product.origin || 'India',
+        origin_location: product.originLocation || '',
+        builder_type: product.builderType || 'indie',
         promoted: product.promoted || false,
         deal_has: product.deal ? product.deal.hasDeal : false,
         deal_text: product.deal ? product.deal.text : '',
@@ -171,6 +187,7 @@ const SupabaseClient = {
         tester_claimed: product.testerClaimed || 0,
         tester_reward: product.testerReward || '',
         founder: product.founder || 'Maker',
+        founder_id: product.founderId || '',
         tags: product.tags || []
       };
 
@@ -198,6 +215,26 @@ const SupabaseClient = {
         method: 'PATCH',
         headers: this.headers,
         body: JSON.stringify({ upvotes: count })
+      });
+    } catch (e) {
+      // Non-blocking
+    }
+  },
+
+  // Post comment to Supabase
+  async createComment(productId, commentData) {
+    try {
+      await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify({
+          product_id: productId,
+          user_id: commentData.userId || 'anon',
+          user_name: commentData.userName,
+          user_avatar: commentData.userAvatar,
+          comment: commentData.comment,
+          is_founder_reply: Boolean(commentData.isFounderReply)
+        })
       });
     } catch (e) {
       // Non-blocking

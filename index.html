@@ -23,9 +23,10 @@
           <ul class="nav-links">
             <li><a href="index.html" class="nav-link active"><span class="nav-pillar-tag tag-discover">Discover</span> Products</a></li>
             <li><a href="#dock-race" class="nav-link">Daily Race <span class="nav-pill">Live</span></a></li>
-            <li><a href="#collections" class="nav-link">Collections</a></li>
+            <li><a href="index.html?geo=India" class="nav-link" id="navMadeInIndia">🇮🇳 Made in India</a></li>
             <li><a href="launch.html" class="nav-link"><span class="nav-pillar-tag tag-launch">Launch</span> AI Studio</a></li>
             <li><a href="dashboard.html" class="nav-link">Command Center</a></li>
+            <li><a href="admin.html" class="nav-link" style="opacity: 0.75;">Admin</a></li>
           </ul>
         </nav>
 
@@ -94,6 +95,24 @@
     <!-- SEARCH & CATEGORY FILTER SECTION -->
     <section class="search-section" id="search-section">
       <div class="container">
+        
+        <!-- GEOGRAPHIC DISCOVERY TABS & ECOSYSTEM CHIPS -->
+        <div class="geo-discovery-wrap">
+          <div class="geo-tabs-group" id="geoTabsContainer">
+            <button type="button" class="geo-tab-btn active" data-geo="all">🌎 All Products</button>
+            <button type="button" class="geo-tab-btn" data-geo="India">🇮🇳 Made in India</button>
+            <button type="button" class="geo-tab-btn" data-geo="Global">🌍 Global</button>
+          </div>
+
+          <div class="ecosystem-chips-group" id="ecoChipsContainer">
+            <span class="eco-label">Discover by:</span>
+            <button type="button" class="eco-chip-btn" data-builder="student">🎓 Student Builders</button>
+            <button type="button" class="eco-chip-btn" data-builder="indie">🚀 Indie Hackers</button>
+            <button type="button" class="eco-chip-btn" data-builder="startup">🏢 Startups</button>
+            <button type="button" class="eco-chip-btn" data-builder="opensource">🌱 Open Source</button>
+          </div>
+        </div>
+
         <!-- Search Input Bar -->
         <div class="search-box-wrap">
           <span class="search-icon">🔍</span>
@@ -101,43 +120,52 @@
             type="text" 
             id="directorySearchInput" 
             class="search-input" 
-            placeholder="Search products by name, tagline, AI, DevTools, or keyword..." 
+            placeholder="Search products by name, tagline, #GenerativeAI, #DevTools, or keyword..." 
             autocomplete="off"
           />
           <button type="button" class="search-clear-btn" id="clearSearchBtn">✕</button>
         </div>
 
-        <!-- Category Horizontal Filter Pills -->
+        <!-- Extended Category Horizontal Filter Pills -->
         <div class="category-filter-wrap" id="categoryFilterContainer">
-          <button type="button" class="filter-pill active" data-category="all">✨ All Products</button>
-          <button type="button" class="filter-pill" data-category="AI Tools">⚡ AI Tools</button>
-          <button type="button" class="filter-pill" data-category="DevTools">🛠️ DevTools</button>
-          <button type="button" class="filter-pill" data-category="Analytics">📊 Analytics</button>
+          <button type="button" class="filter-pill active" data-category="all">✨ All Categories</button>
+          <button type="button" class="filter-pill" data-category="AI">⚡ AI</button>
+          <button type="button" class="filter-pill" data-category="SaaS">🛠️ SaaS</button>
+          <button type="button" class="filter-pill" data-category="DevTools">💻 DevTools</button>
+          <button type="button" class="filter-pill" data-category="Productivity">🎧 Productivity</button>
           <button type="button" class="filter-pill" data-category="Design">🎨 Design</button>
           <button type="button" class="filter-pill" data-category="Marketing">✍️ Marketing</button>
-          <button type="button" class="filter-pill" data-category="Productivity">🎧 Productivity</button>
           <button type="button" class="filter-pill" data-category="Fintech">💳 Fintech</button>
+          <button type="button" class="filter-pill" data-category="EdTech">📚 EdTech</button>
+          <button type="button" class="filter-pill" data-category="HealthTech">🏥 HealthTech</button>
+          <button type="button" class="filter-pill" data-category="E-commerce">🛍️ E-commerce</button>
+          <button type="button" class="filter-pill" data-category="Student Projects">🎓 Student Projects</button>
+          <button type="button" class="filter-pill" data-category="Open Source">🌱 Open Source</button>
+          <button type="button" class="filter-pill" data-category="Creator Tools">🎬 Creator Tools</button>
         </div>
 
-        <!-- Secondary Controls / Sort -->
-        <div class="filter-controls-row">
-          <div class="filter-count" id="resultCount">Showing <strong>9</strong> products</div>
+        <!-- Trending Timeframe Navigation Bar & Sort Controls -->
+        <div class="trending-nav-wrap">
+          <div class="trending-tabs-group" id="trendingTabsContainer">
+            <button type="button" class="trending-tab-btn active" data-timeframe="today">🔥 Trending Today</button>
+            <button type="button" class="trending-tab-btn" data-timeframe="week">📈 Trending This Week</button>
+            <button type="button" class="trending-tab-btn" data-timeframe="all-time">🏆 All-Time Best</button>
+            <button type="button" class="trending-tab-btn" data-timeframe="newest">🕒 Recent Launches</button>
+          </div>
 
           <div class="filter-sort-group">
             <button type="button" class="filter-toggle-btn" id="testersOnlyToggle">
-              <span>🎯 Needs Testers (Perks)</span>
+              <span>🎯 Needs Testers</span>
             </button>
 
             <button type="button" class="filter-toggle-btn" id="dealsOnlyToggle">
-              <span>🏷️ Exclusive Deals Only</span>
+              <span>🏷️ Founder Deals</span>
             </button>
-
-            <select id="sortSelect" class="filter-select" aria-label="Sort products">
-              <option value="trending">🔥 Trending (Most Upvoted)</option>
-              <option value="newest">🕒 Newest First</option>
-              <option value="featured">⭐ Featured First</option>
-            </select>
           </div>
+        </div>
+
+        <div class="filter-count-row">
+          <div class="filter-count" id="resultCount">Showing <strong>...</strong> products</div>
         </div>
       </div>
     </section>

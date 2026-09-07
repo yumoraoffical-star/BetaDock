@@ -120,6 +120,43 @@
                 </div>
               </div>
 
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="productOriginSelect">Geographic Origin <span class="req">*</span></label>
+                  <select id="productOriginSelect" class="form-control" required>
+                    <option value="India">🇮🇳 Made in India</option>
+                    <option value="Global">🌍 Global</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="productOriginLocation">City & State / Country <span class="hint">(e.g. Bengaluru, India)</span></label>
+                  <input type="text" id="productOriginLocation" class="form-control" placeholder="e.g. Bengaluru, Karnataka" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productBuilderTypeSelect">Builder Persona / Ecosystem <span class="req">*</span></label>
+                <select id="productBuilderTypeSelect" class="form-control" required>
+                  <option value="indie">🚀 Indie Hacker</option>
+                  <option value="student">🎓 Student Builder / College Project</option>
+                  <option value="startup">🏢 Funded / Bootstrapped Startup</option>
+                  <option value="opensource">🌱 Open Source Software</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productProblemSolved">The Problem Solved <span class="req">*</span></label>
+                <textarea id="productProblemSolved" class="form-control" rows="2" placeholder="What specific pain point does your tool eliminate for users?" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productFeatures">Core Features / Highlights <span class="hint">(One feature per line)</span></label>
+                <textarea id="productFeatures" class="form-control" rows="3" placeholder="AI auto-indexing
+Instant social media generator
+Real-time analytics dashboard"></textarea>
+              </div>
+
               <div class="form-group">
                 <label class="form-label" for="productDesc">Detailed Description</label>
                 <textarea id="productDesc" class="form-control" placeholder="Explain what problem your product solves, key features, and who it is built for."></textarea>
