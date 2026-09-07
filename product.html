@@ -177,6 +177,7 @@
         </nav>
 
         <div class="header-actions">
+          <div id="headerAuthContainer"></div>
           <a href="/launch" class="btn btn-primary btn-sm">⚡ Launch Studio</a>
           <a href="/submit" class="btn btn-ghost btn-sm">+ Submit Tool</a>
         </div>
@@ -304,6 +305,7 @@
   <script src="js/data.js"></script>
   <script src="js/supabase.js"></script>
   <script src="js/services/ProductService.js"></script>
+  <script src="js/app.js"></script>
   <script>
     let currentProduct = null;
 
@@ -358,6 +360,14 @@
 
     async function handleUpvote() {
       if (!currentProduct) return;
+      if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+        if (typeof openAuthModal === 'function') {
+          openAuthModal('Sign in required to upvote this product!', () => {
+            handleUpvote();
+          });
+        }
+        return;
+      }
       currentProduct.upvotes = (currentProduct.upvotes || 0) + 1;
       document.getElementById('upvoteCount').textContent = currentProduct.upvotes;
       await ProductService.saveProduct(currentProduct);
@@ -373,6 +383,14 @@
 
     function copyCoupon() {
       if (currentProduct && currentProduct.deal) {
+        if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+          if (typeof openAuthModal === 'function') {
+            openAuthModal('Sign in required to copy founder discount codes!', () => {
+              copyCoupon();
+            });
+          }
+          return;
+        }
         navigator.clipboard.writeText(currentProduct.deal.code);
         alert(`Coupon ${currentProduct.deal.code} copied!`);
       }

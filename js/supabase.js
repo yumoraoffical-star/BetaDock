@@ -24,6 +24,26 @@ const SupabaseClient = {
     window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(currentUrl)}`;
   },
 
+  // Email & Maker Pass Sign-In
+  signInWithEmail(email, name) {
+    if (!email) return null;
+    const cleanEmail = email.trim();
+    const cleanName = (name && name.trim()) || cleanEmail.split('@')[0];
+    const user = {
+      id: 'usr_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
+      email: cleanEmail,
+      name: cleanName,
+      avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(cleanName)}&backgroundColor=f5ba27,38bdf8,10b981`
+    };
+    localStorage.setItem(USER_SESSION_KEY, JSON.stringify(user));
+    window.dispatchEvent(new CustomEvent('betadock:auth-change', { detail: { user } }));
+    return user;
+  },
+
+  isAuthenticated() {
+    return Boolean(this.getUser());
+  },
+
   // Check URL hash for OAuth redirect token or cached session
   checkAuthSession() {
     // Check if returning from Supabase OAuth with hash

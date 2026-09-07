@@ -6,8 +6,18 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initToasts();
+  ensureAuthModal();
   initAuthUI();
   
+  // Listen for auth state changes across windows/components
+  window.addEventListener('betadock:auth-change', () => {
+    initAuthUI();
+    if (document.getElementById('directoryGrid')) renderDirectory();
+    if (document.getElementById('dockRacePodium')) renderPodiumRace();
+    if (document.getElementById('submitProductForm')) initSubmissionView();
+    if (document.getElementById('dashboardTableBody')) initDashboardView();
+  });
+
   // Page-specific initialization
   if (document.getElementById('directoryGrid')) {
     initDirectoryView();
@@ -21,8 +31,169 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   AUTHENTICATION & USER PROFILE UI
+   AUTHENTICATION SCREEN, MODAL & USER PROFILE UI
    ========================================================================== */
+
+let pendingAuthCallback = null;
+
+function ensureAuthModal() {
+  if (document.getElementById('authModalBackdrop')) return;
+
+  const modalHtml = `
+    <div class="modal-backdrop" id="authModalBackdrop" role="dialog" aria-modal="true" style="z-index: 9999;">
+      <div class="auth-modal-dialog">
+        <button type="button" class="modal-close-btn" onclick="closeAuthModal()" title="Close">✕</button>
+        
+        <div class="auth-badge">🔒 BetaDock Passport</div>
+        <h2 class="auth-title">Welcome to BetaDock</h2>
+        <p class="auth-subtitle" id="authModalSubtitle">Sign in to unlock all platform tools, upvoting, launch submissions, and beta testing perks.</p>
+        
+        <div class="auth-reason-pill" id="authContextReason" style="display: none;">
+          <span>⚡</span>
+          <span id="authContextReasonText">Sign-in required to continue</span>
+        </div>
+
+        <!-- Method 1: Google One-Click -->
+        <button type="button" class="auth-btn-google-large" onclick="handleGoogleSignIn()">
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+
+        <div class="auth-divider">
+          <span>or continue with email / maker pass</span>
+        </div>
+
+        <!-- Method 2: Maker Pass / Email -->
+        <form class="auth-form" onsubmit="handleEmailAuthSubmit(event)">
+          <div class="auth-input-wrap">
+            <label class="auth-label">Full Name or Maker Handle</label>
+            <input type="text" id="authInputName" class="auth-input" placeholder="e.g. Alex Rivera" />
+          </div>
+          <div class="auth-input-wrap">
+            <label class="auth-label">Email Address <span style="color: var(--coral);">*</span></label>
+            <input type="email" id="authInputEmail" class="auth-input" placeholder="alex@startup.com" required />
+          </div>
+          <button type="submit" class="auth-submit-btn">
+            <span>Unlock Instant Access</span>
+            <span>🚀</span>
+          </button>
+        </form>
+
+        <div class="auth-perks-row">
+          <div class="auth-perk-item">
+            <span class="check">✓</span>
+            <span>Upvote daily top SaaS & AI software tools</span>
+          </div>
+          <div class="auth-perk-item">
+            <span class="check">✓</span>
+            <span>Submit products to 50,000+ monthly tech enthusiasts</span>
+          </div>
+          <div class="auth-perk-item">
+            <span class="check">✓</span>
+            <span>Claim exclusive founder deals & become a verified beta tester</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+  // Close when clicking outside dialog
+  const backdrop = document.getElementById('authModalBackdrop');
+  if (backdrop) {
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeAuthModal();
+    });
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAuthModal();
+  });
+}
+
+function openAuthModal(reason, onAuthenticatedCallback) {
+  ensureAuthModal();
+  const backdrop = document.getElementById('authModalBackdrop');
+  const reasonBox = document.getElementById('authContextReason');
+  const reasonText = document.getElementById('authContextReasonText');
+
+  pendingAuthCallback = typeof onAuthenticatedCallback === 'function' ? onAuthenticatedCallback : null;
+
+  if (reason && reasonBox && reasonText) {
+    reasonText.textContent = reason;
+    reasonBox.style.display = 'flex';
+  } else if (reasonBox) {
+    reasonBox.style.display = 'none';
+  }
+
+  if (backdrop) {
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      document.getElementById('authInputEmail')?.focus();
+    }, 150);
+  }
+}
+
+function closeAuthModal() {
+  const backdrop = document.getElementById('authModalBackdrop');
+  if (backdrop) {
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function handleEmailAuthSubmit(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('authInputEmail');
+  const nameInput = document.getElementById('authInputName');
+  const email = emailInput ? emailInput.value.trim() : '';
+  const name = nameInput ? nameInput.value.trim() : '';
+
+  if (!email || !email.includes('@')) {
+    showToast('Please enter a valid email address!', 'gold');
+    emailInput?.focus();
+    return;
+  }
+
+  if (typeof SupabaseClient !== 'undefined') {
+    const user = SupabaseClient.signInWithEmail(email, name);
+    closeAuthModal();
+    initAuthUI();
+    showToast(`🎉 Welcome aboard, ${user.name}! Full access unlocked.`, 'success');
+
+    // Execute pending callback if any
+    if (pendingAuthCallback) {
+      const cb = pendingAuthCallback;
+      pendingAuthCallback = null;
+      cb();
+    }
+  }
+}
+
+function handleInlineGateAuth(e) {
+  e.preventDefault();
+  const name = document.getElementById('gateFounderName')?.value.trim();
+  const email = document.getElementById('gateFounderEmail')?.value.trim();
+
+  if (!email || !email.includes('@')) {
+    showToast('Please enter a valid email address!', 'gold');
+    return;
+  }
+
+  if (typeof SupabaseClient !== 'undefined') {
+    const user = SupabaseClient.signInWithEmail(email, name);
+    initAuthUI();
+    showToast(`🎉 Welcome ${user.name}! Access unlocked.`, 'success');
+  }
+}
 
 function initAuthUI() {
   const authContainer = document.getElementById('headerAuthContainer');
@@ -47,14 +218,8 @@ function initAuthUI() {
     }
   } else {
     authContainer.innerHTML = `
-      <button type="button" class="btn btn-google btn-sm" id="googleSignInBtn" onclick="handleGoogleSignIn()">
-        <svg width="14" height="14" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-        </svg>
-        <span>Sign In</span>
+      <button type="button" class="btn btn-primary btn-sm" id="headerSignInBtn" onclick="openAuthModal('Sign in to unlock all BetaDock tools & services')">
+        <span>🔒 Sign In</span>
       </button>
     `;
   }
@@ -411,6 +576,13 @@ function resetFilters() {
 function handleVote(event, productId) {
   event.stopPropagation(); // prevent modal opening
 
+  if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+    openAuthModal('Sign in required to upvote products and support founders!', () => {
+      handleVote(event, productId);
+    });
+    return;
+  }
+
   const products = getProducts();
   let userVotes = getUserVotes();
   const productIndex = products.findIndex(p => p.id === productId);
@@ -444,6 +616,15 @@ function handleVote(event, productId) {
 }
 
 function handleOutboundClick(event, productId, url) {
+  if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+    event.preventDefault();
+    event.stopPropagation();
+    openAuthModal('Sign in required to access direct founder launch links!', () => {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    });
+    return;
+  }
+
   event.stopPropagation();
   const products = getProducts();
   const product = products.find(p => p.id === productId);
@@ -682,12 +863,24 @@ function closeProductModal() {
 }
 
 function handleVoteModal(productId) {
+  if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+    openAuthModal('Sign in required to upvote this product!', () => {
+      handleVoteModal(productId);
+    });
+    return;
+  }
   const fakeEvent = { stopPropagation: () => {} };
   handleVote(fakeEvent, productId);
   openProductModal(productId); // re-render modal with updated vote
 }
 
 function copyCouponCode(code) {
+  if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+    openAuthModal('Sign in required to claim and copy founder coupon codes!', () => {
+      copyCouponCode(code);
+    });
+    return;
+  }
   navigator.clipboard.writeText(code).then(() => {
     showToast(`Copied coupon code: ${code}!`, 'success');
   }).catch(() => {
@@ -706,6 +899,13 @@ function setStarRating(val) {
 }
 
 function submitBetaFeedback(productId) {
+  if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+    openAuthModal('Sign in required to submit feedback and claim rewards!', () => {
+      submitBetaFeedback(productId);
+    });
+    return;
+  }
+
   const user = document.getElementById('feedbackUser')?.value.trim();
   const email = document.getElementById('feedbackEmail')?.value.trim();
   const good = document.getElementById('feedbackGood')?.value.trim();
@@ -757,6 +957,59 @@ function submitBetaFeedback(productId) {
    ========================================================================== */
 
 function initSubmissionView() {
+  const user = typeof SupabaseClient !== 'undefined' ? SupabaseClient.getUser() : null;
+  const formCard = document.querySelector('.form-card');
+  const existingGate = document.getElementById('submitAuthGate');
+
+  if (!user) {
+    if (formCard) {
+      const formEl = document.getElementById('submitProductForm');
+      const aiBox = document.querySelector('.ai-autofill-box');
+      if (formEl) formEl.style.display = 'none';
+      if (aiBox) aiBox.style.display = 'none';
+
+      if (!existingGate) {
+        const gate = document.createElement('div');
+        gate.id = 'submitAuthGate';
+        gate.className = 'auth-gate-wall';
+        gate.innerHTML = `
+          <div class="auth-badge">🔒 Founder Authentication Required</div>
+          <h2 style="font-size: 1.85rem; margin-bottom: 8px;">Founder Sign-In Required</h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">
+            To submit your product, earn verified badges, and generate AI marketing campaigns, you must authenticate your founder profile.
+          </p>
+          <button type="button" class="auth-btn-google-large" onclick="handleGoogleSignIn()" style="margin-bottom: 16px;">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+          <div class="auth-divider"><span>or enter maker email</span></div>
+          <form onsubmit="handleInlineGateAuth(event)" style="display:flex; flex-direction:column; gap:10px; text-align:left;">
+            <input type="text" id="gateFounderName" class="auth-input" placeholder="Your Name or Studio Handle" required />
+            <input type="email" id="gateFounderEmail" class="auth-input" placeholder="founder@company.com" required />
+            <button type="submit" class="auth-submit-btn">Unlock Submission Form 🚀</button>
+          </form>
+        `;
+        formCard.prepend(gate);
+      }
+    }
+  } else {
+    if (existingGate) existingGate.remove();
+    const formEl = document.getElementById('submitProductForm');
+    const aiBox = document.querySelector('.ai-autofill-box');
+    if (formEl) formEl.style.display = 'block';
+    if (aiBox) aiBox.style.display = 'block';
+
+    const founderInput = document.getElementById('founderName');
+    if (founderInput && !founderInput.value) {
+      founderInput.value = user.name;
+    }
+  }
+
   setupAiAutoFill();
   setupLivePreviewListeners();
   setupTierSelector();
@@ -880,6 +1133,11 @@ function setupFormSubmission() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+      openAuthModal('Sign in required to submit your product to BetaDock!');
+      return;
+    }
+
     const name = document.getElementById('productName').value.trim();
     const url = document.getElementById('productUrl').value.trim();
     const tagline = document.getElementById('productTagline').value.trim();
@@ -961,6 +1219,61 @@ function setupFormSubmission() {
    ========================================================================== */
 
 function initDashboardView() {
+  const user = typeof SupabaseClient !== 'undefined' ? SupabaseClient.getUser() : null;
+  const mainDash = document.querySelector('.dashboard-wrap') || document.querySelector('main');
+  const existingGate = document.getElementById('dashAuthGate');
+
+  if (!user) {
+    if (mainDash) {
+      const statsGrid = document.querySelector('.dashboard-stats-grid');
+      const tableCard = document.querySelector('.dashboard-table-card');
+      const embedCard = document.getElementById('embed-badges');
+      if (statsGrid) statsGrid.style.display = 'none';
+      if (tableCard) tableCard.style.display = 'none';
+      if (embedCard) embedCard.style.display = 'none';
+
+      if (!existingGate) {
+        const gate = document.createElement('div');
+        gate.id = 'dashAuthGate';
+        gate.className = 'auth-gate-wall';
+        gate.innerHTML = `
+          <div class="auth-badge">🔒 Founder Authentication Required</div>
+          <h2 style="font-size: 1.85rem; margin-bottom: 8px;">Command Center Protected</h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">
+            Sign in to access your founder traffic analytics, monitor live upvotes, read tester feedback, and grab verified embed badges.
+          </p>
+          <button type="button" class="auth-btn-google-large" onclick="handleGoogleSignIn()" style="margin-bottom: 16px;">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+          <div class="auth-divider"><span>or enter maker email</span></div>
+          <form onsubmit="handleInlineGateAuth(event)" style="display:flex; flex-direction:column; gap:10px; text-align:left;">
+            <input type="text" id="gateFounderName" class="auth-input" placeholder="Founder Name / Handle" required />
+            <input type="email" id="gateFounderEmail" class="auth-input" placeholder="founder@company.com" required />
+            <button type="submit" class="auth-submit-btn">Unlock Command Center 🚀</button>
+          </form>
+        `;
+        const container = mainDash.querySelector('.container') || mainDash;
+        container.prepend(gate);
+      }
+    }
+    return;
+  }
+
+  // User is authenticated!
+  if (existingGate) existingGate.remove();
+  const statsGrid = document.querySelector('.dashboard-stats-grid');
+  const tableCard = document.querySelector('.dashboard-table-card');
+  const embedCard = document.getElementById('embed-badges');
+  if (statsGrid) statsGrid.style.display = '';
+  if (tableCard) tableCard.style.display = '';
+  if (embedCard) embedCard.style.display = '';
+
   renderDashboardStats();
   renderDashboardListings();
   renderDashboardFeedback();

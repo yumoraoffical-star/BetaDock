@@ -91,6 +91,15 @@ function setupStudioActionHandlers() {
 
   if (btnAnalyzeUrl) {
     btnAnalyzeUrl.addEventListener('click', async () => {
+      if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+        if (typeof openAuthModal === 'function') {
+          openAuthModal('Sign in required to analyze products & generate launch campaigns!');
+        } else {
+          showToast('Sign in required to use Launch Studio!', 'gold');
+        }
+        return;
+      }
+
       const rawUrl = urlInput?.value.trim();
       if (!rawUrl) {
         showToast('Please enter a valid website URL!', 'gold');
@@ -107,6 +116,12 @@ function setupStudioActionHandlers() {
 
   if (btnReanalyze) {
     btnReanalyze.addEventListener('click', async () => {
+      if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+        if (typeof openAuthModal === 'function') {
+          openAuthModal('Sign in required to use AI Launch Studio!');
+        }
+        return;
+      }
       if (!activeProduct) return;
       btnReanalyze.textContent = '⏳ Analyzing...';
       btnReanalyze.disabled = true;
@@ -119,6 +134,12 @@ function setupStudioActionHandlers() {
 
   if (btnGenerateFull) {
     btnGenerateFull.addEventListener('click', async () => {
+      if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+        if (typeof openAuthModal === 'function') {
+          openAuthModal('Sign in required to generate multi-channel marketing campaigns!');
+        }
+        return;
+      }
       btnGenerateFull.innerHTML = '<span>⏳ Generating Campaign...</span>';
       btnGenerateFull.disabled = true;
       await generateCampaignForActiveProduct();
@@ -130,6 +151,12 @@ function setupStudioActionHandlers() {
 
   if (btnQuickRegenAll) {
     btnQuickRegenAll.addEventListener('click', async () => {
+      if (typeof SupabaseClient !== 'undefined' && !SupabaseClient.getUser()) {
+        if (typeof openAuthModal === 'function') {
+          openAuthModal('Sign in required to generate campaigns!');
+        }
+        return;
+      }
       btnQuickRegenAll.innerHTML = '<span>⏳ Generating...</span>';
       btnQuickRegenAll.disabled = true;
       await generateCampaignForActiveProduct();
