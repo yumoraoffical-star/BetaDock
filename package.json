@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "BetaDock — Next-Gen Product & Beta Tool Directory Marketplace",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "start": "node server.js",
+    "deploy": "git add . && git commit -m 'deploy updates' && git push origin main"
   },
   "keywords": [
     "directory",

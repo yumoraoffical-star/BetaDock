@@ -5,18 +5,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Surface & Background Hierarchy - Deep Obsidian & Glass */
-  --bg-dark: #07090E;
-  --bg-card: rgba(18, 23, 35, 0.72);
-  --bg-card-hover: rgba(25, 32, 50, 0.88);
-  --bg-glass: rgba(10, 13, 20, 0.82);
-  --bg-glass-card: rgba(18, 24, 38, 0.65);
+  /* Surface & Background Hierarchy - Refined Modern Slate (Slightly Lighter, Higher Luminance) */
+  --bg-dark: #0D131F;
+  --bg-card: rgba(26, 36, 56, 0.80);
+  --bg-card-hover: rgba(38, 52, 80, 0.94);
+  --bg-glass: rgba(16, 23, 38, 0.88);
+  --bg-glass-card: rgba(26, 36, 56, 0.72);
   
   /* Precision Borders & Specular Lights */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.15);
-  --border-highlight: rgba(255, 255, 255, 0.25);
-  --border-focus: rgba(245, 186, 39, 0.6);
+  --border-subtle: rgba(255, 255, 255, 0.12);
+  --border-medium: rgba(255, 255, 255, 0.20);
+  --border-highlight: rgba(255, 255, 255, 0.32);
+  --border-focus: rgba(245, 186, 39, 0.7);
 
   /* Curated Color Harmonization */
   --primary: #F5BA27;           /* Gold / Amber Spark */
@@ -43,21 +43,21 @@
 
   /* High-Contrast Luxury Typography */
   --text-main: #FFFFFF;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --text-inverted: #07090E;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-inverted: #0D131F;
 
   /* Typography Stacks */
   --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Elevations & Lighting Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 10px 30px -8px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 20px 50px -12px rgba(0, 0, 0, 0.75);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 10px 30px -8px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 20px 50px -12px rgba(0, 0, 0, 0.45);
   --shadow-glow: 0 0 35px rgba(245, 186, 39, 0.22);
-  --shadow-card: inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 10px 30px -10px rgba(0, 0, 0, 0.6);
-  --shadow-card-hover: inset 0 1px 0 0 rgba(255, 255, 255, 0.22), 0 22px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px -5px rgba(245, 186, 39, 0.15);
+  --shadow-card: inset 0 1px 0 0 rgba(255, 255, 255, 0.16), 0 10px 30px -10px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: inset 0 1px 0 0 rgba(255, 255, 255, 0.26), 0 22px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px -5px rgba(245, 186, 39, 0.15);
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -93,13 +93,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   overflow-x: hidden;
-  /* Cosmic Mesh + Subtle High-Tech Grid Pattern */
+  /* Modern Clean Slate Backdrop + Luminous Ambient Glows */
   background-image: 
-    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(120, 119, 198, 0.18), transparent 75%),
-    radial-gradient(ellipse 70% 50% at 85% 15%, rgba(56, 189, 248, 0.12), transparent 60%),
-    radial-gradient(ellipse 65% 50% at 10% 40%, rgba(245, 186, 39, 0.10), transparent 65%),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    radial-gradient(ellipse 95% 65% at 50% -12%, rgba(99, 102, 241, 0.28), transparent 75%),
+    radial-gradient(ellipse 75% 55% at 85% 15%, rgba(56, 189, 248, 0.22), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 10% 40%, rgba(245, 186, 39, 0.16), transparent 65%),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
   background-attachment: fixed;
 }
@@ -359,7 +359,7 @@ img {
   align-items: center;
   gap: 10px;
   padding: 4px 12px 4px 4px;
-  background: rgba(18, 23, 35, 0.8);
+  background: rgba(26, 36, 56, 0.85);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-sm);
@@ -488,10 +488,10 @@ img {
   gap: 36px;
   padding: 22px 32px;
   border-radius: var(--radius-xl);
-  background: rgba(18, 23, 36, 0.65);
+  background: rgba(26, 36, 58, 0.72);
   backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 16px 36px -12px rgba(0, 0, 0, 0.35);
   max-width: 860px;
   margin: 0 auto;
 }
@@ -550,21 +550,21 @@ img {
 .search-input {
   width: 100%;
   padding: 20px 24px 20px 60px;
-  background: rgba(18, 23, 36, 0.82);
+  background: rgba(26, 36, 58, 0.85);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-xl);
   color: var(--text-main);
   font-size: 1.08rem;
   transition: all var(--transition-normal);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 36px rgba(0, 0, 0, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--primary);
-  background: rgba(22, 28, 44, 0.95);
-  box-shadow: 0 0 0 3px rgba(245, 186, 39, 0.25), 0 16px 40px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: rgba(34, 46, 74, 0.95);
+  box-shadow: 0 0 0 3px rgba(245, 186, 39, 0.25), 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .search-icon {
@@ -621,9 +621,9 @@ img {
 .filter-pill {
   padding: 9px 20px;
   border-radius: var(--radius-full);
-  background: rgba(18, 23, 36, 0.7);
+  background: rgba(26, 36, 58, 0.75);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text-secondary);
   font-weight: 600;
   font-size: 0.9rem;
@@ -632,13 +632,13 @@ img {
   align-items: center;
   gap: 8px;
   transition: all var(--transition-normal);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .filter-pill:hover {
-  background: rgba(25, 32, 50, 0.9);
+  background: rgba(38, 52, 80, 0.92);
   color: var(--text-main);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.26);
   transform: translateY(-1px);
 }
 
@@ -749,13 +749,13 @@ img {
 
 .filter-select {
   padding: 8px 16px;
-  background: rgba(18, 23, 36, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(26, 36, 58, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-md);
   color: var(--text-main);
   font-size: 0.88rem;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all var(--transition-fast);
 }
 
@@ -767,8 +767,8 @@ img {
 
 .filter-toggle-btn {
   padding: 8px 16px;
-  background: rgba(18, 23, 36, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(26, 36, 58, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   font-size: 0.88rem;
@@ -780,9 +780,9 @@ img {
 }
 
 .filter-toggle-btn:hover {
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.3);
   color: #FFF;
-  background: rgba(25, 32, 50, 0.85);
+  background: rgba(38, 52, 80, 0.9);
 }
 
 .filter-toggle-btn.active {
@@ -891,28 +891,28 @@ img {
 
 /* Rank 1: Royal Gold Champion Card */
 .podium-card.rank-1 {
-  border: 1px solid rgba(245, 186, 39, 0.5);
-  background: linear-gradient(170deg, rgba(245, 186, 39, 0.12) 0%, rgba(20, 26, 42, 0.85) 45%, rgba(10, 13, 22, 0.98) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 18px 45px -10px rgba(245, 186, 39, 0.25);
+  border: 1px solid rgba(245, 186, 39, 0.55);
+  background: linear-gradient(170deg, rgba(245, 186, 39, 0.16) 0%, rgba(30, 42, 65, 0.9) 45%, rgba(18, 26, 42, 0.98) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 18px 45px -10px rgba(245, 186, 39, 0.25);
 }
 
 .podium-card.rank-1:hover {
   border-color: var(--primary);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 28px 60px -10px rgba(245, 186, 39, 0.4), 0 0 35px rgba(245, 186, 39, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 28px 60px -10px rgba(245, 186, 39, 0.4), 0 0 35px rgba(245, 186, 39, 0.25);
 }
 
 /* Rank 2: Electric Cyan / Silver Card */
 .podium-card.rank-2 {
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  background: linear-gradient(170deg, rgba(56, 189, 248, 0.08) 0%, rgba(20, 26, 42, 0.85) 45%, rgba(10, 13, 22, 0.98) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 18px 45px -10px rgba(56, 189, 248, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: linear-gradient(170deg, rgba(56, 189, 248, 0.12) 0%, rgba(30, 42, 65, 0.9) 45%, rgba(18, 26, 42, 0.98) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 18px 45px -10px rgba(56, 189, 248, 0.18);
 }
 
 /* Rank 3: Cosmic Purple Card */
 .podium-card.rank-3 {
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  background: linear-gradient(170deg, rgba(139, 92, 246, 0.08) 0%, rgba(20, 26, 42, 0.85) 45%, rgba(10, 13, 22, 0.98) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 18px 45px -10px rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  background: linear-gradient(170deg, rgba(139, 92, 246, 0.12) 0%, rgba(30, 42, 65, 0.9) 45%, rgba(18, 26, 42, 0.98) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 18px 45px -10px rgba(139, 92, 246, 0.18);
 }
 
 .rank-badge {
@@ -1133,8 +1133,8 @@ img {
 }
 
 .product-card {
-  background: linear-gradient(165deg, rgba(20, 25, 40, 0.75) 0%, rgba(12, 15, 25, 0.92) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: linear-gradient(165deg, rgba(28, 38, 59, 0.82) 0%, rgba(19, 27, 43, 0.94) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
   padding: 22px;
   display: flex;
@@ -1144,19 +1144,19 @@ img {
   cursor: pointer;
   position: relative;
   backdrop-filter: blur(16px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 30px -10px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 12px 30px -10px rgba(0, 0, 0, 0.35);
 }
 
 .product-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(245, 186, 39, 0.45);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 24px 50px -12px rgba(0, 0, 0, 0.8), 0 0 35px -5px rgba(245, 186, 39, 0.16);
-  background: linear-gradient(165deg, rgba(26, 33, 54, 0.88) 0%, rgba(14, 18, 30, 0.96) 100%);
+  border-color: rgba(245, 186, 39, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 24px 50px -12px rgba(0, 0, 0, 0.45), 0 0 35px -5px rgba(245, 186, 39, 0.2);
+  background: linear-gradient(165deg, rgba(38, 52, 80, 0.92) 0%, rgba(24, 34, 55, 0.98) 100%);
 }
 
 .product-card.is-featured {
-  border-color: rgba(245, 186, 39, 0.4);
-  background: linear-gradient(170deg, rgba(245, 186, 39, 0.08) 0%, rgba(20, 25, 40, 0.8) 40%, rgba(12, 15, 25, 0.95) 100%);
+  border-color: rgba(245, 186, 39, 0.5);
+  background: linear-gradient(170deg, rgba(245, 186, 39, 0.12) 0%, rgba(30, 42, 65, 0.88) 40%, rgba(20, 28, 45, 0.96) 100%);
 }
 
 .product-card-header {
@@ -1595,7 +1595,7 @@ img {
 .form-control {
   width: 100%;
   padding: 12px 16px;
-  background: #0B0E14;
+  background: rgba(22, 31, 48, 0.9);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-md);
   color: var(--text-main);
@@ -1625,7 +1625,7 @@ textarea.form-control {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 16px;
-  background: var(--bg-dark);
+  background: var(--bg-card);
   cursor: pointer;
   transition: all var(--transition-fast);
   text-align: left;
@@ -1809,7 +1809,7 @@ textarea.form-control {
 }
 
 .badge-preview-box {
-  background: #080A0F;
+  background: rgba(22, 31, 48, 0.7);
   border: 1px dashed var(--border-medium);
   border-radius: var(--radius-lg);
   padding: 40px;
@@ -1839,7 +1839,7 @@ textarea.form-control {
 }
 
 .ld-badge-dark {
-  background: #0F131C;
+  background: #182236;
   border: 1px solid rgba(245, 186, 39, 0.4);
   color: #FFF;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 186, 39, 0.15);
@@ -1859,7 +1859,7 @@ textarea.form-control {
 }
 
 .code-snippet-box {
-  background: #06080D;
+  background: rgba(18, 26, 42, 0.9);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 14px 16px;
@@ -2254,7 +2254,7 @@ textarea.form-control {
 }
 
 .intel-item {
-  background: #090C12;
+  background: rgba(24, 34, 53, 0.85);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 18px;
@@ -2301,7 +2301,7 @@ textarea.form-control {
 }
 
 .channel-card-item {
-  background: #090C12;
+  background: rgba(24, 34, 53, 0.85);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 16px;
@@ -2335,7 +2335,7 @@ textarea.form-control {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #090C12;
+  background: rgba(24, 34, 53, 0.85);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 12px 18px;
@@ -2385,7 +2385,7 @@ textarea.form-control {
 .content-display-textarea {
   width: 100%;
   min-height: 180px;
-  background: #080A0F;
+  background: rgba(20, 28, 45, 0.9);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-md);
   color: var(--text-main);
@@ -2474,7 +2474,7 @@ textarea.form-control {
 
 .asset-meta-row {
   padding: 14px 18px;
-  background: #0A0D14;
+  background: rgba(20, 28, 45, 0.9);
   border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
@@ -2497,7 +2497,7 @@ textarea.form-control {
 }
 
 .calendar-day-box {
-  background: #090C12;
+  background: rgba(24, 34, 53, 0.85);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 14px 10px;
@@ -2621,7 +2621,7 @@ textarea.form-control {
 }
 
 .perf-kpi-item {
-  background: #090C12;
+  background: rgba(24, 34, 53, 0.85);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 14px;
@@ -2634,7 +2634,7 @@ textarea.form-control {
 .site-footer {
   border-top: 1px solid var(--border-subtle);
   padding: 60px 0 32px;
-  background: rgba(10, 13, 20, 0.8);
+  background: rgba(15, 22, 36, 0.92);
   margin-top: 60px;
 }
 
