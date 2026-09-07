@@ -213,7 +213,7 @@ img {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 22px;
   list-style: none;
 }
 
@@ -226,6 +226,8 @@ img {
   gap: 6px;
   position: relative;
   padding: 6px 0;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -244,18 +246,21 @@ img {
 }
 
 .nav-pill {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   padding: 2px 7px;
   border-radius: var(--radius-full);
   background: rgba(245, 186, 39, 0.15);
   color: var(--primary);
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
