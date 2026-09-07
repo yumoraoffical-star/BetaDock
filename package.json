@@ -1,0 +1,19 @@
+{
+  "name": "betadock",
+  "version": "1.0.0",
+  "description": "BetaDock — Next-Gen Product & Beta Tool Directory Marketplace",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "directory",
+    "marketplace",
+    "producthunt",
+    "saas",
+    "ai-tools"
+  ],
+  "author": "Launchdock",
+  "license": "MIT"
+}

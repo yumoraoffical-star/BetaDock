@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Your Product — BetaDock</title>
+  <meta name="description" content="List your software tool, AI application, or indie SaaS on BetaDock. Use instant AI auto-fill to submit in under 10 seconds.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+</head>
+<body>
+
+  <!-- ================= SITE HEADER ================= -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo-wrap" id="submitLogoLink">
+          <div class="logo-badge">🚀</div>
+          <div class="logo-text">Beta<span>dock</span></div>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link"><span class="nav-pillar-tag tag-discover">Discover</span> Products</a></li>
+            <li><a href="index.html#dock-race" class="nav-link">Daily Race</a></li>
+            <li><a href="index.html#collections" class="nav-link">Collections</a></li>
+            <li><a href="launch.html" class="nav-link"><span class="nav-pillar-tag tag-launch">Launch</span> AI Studio</a></li>
+            <li><a href="dashboard.html" class="nav-link">Command Center</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <div id="headerAuthContainer"></div>
+          <a href="launch.html" class="btn btn-primary btn-sm">⚡ Launch Studio</a>
+          <a href="index.html" class="btn btn-ghost btn-sm">← Back to Directory</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SUBMISSION PAGE ================= -->
+  <main class="submit-layout">
+    <div class="container">
+      <div style="max-width: 820px; margin: 0 auto 36px; text-align: center;">
+        <div class="section-eyebrow" style="justify-content: center; margin-bottom: 6px;">
+          <span>⚡ Unified Launch Engine</span>
+        </div>
+        <h1 style="font-size: 2.6rem; margin-bottom: 10px;">
+          Submit Once. <span class="highlight">Launch Everywhere.</span>
+        </h1>
+        <p style="font-size: 1.05rem;">
+          Publish to the BetaDock directory and instantly unlock the AI Launch Studio to generate multi-channel campaigns, marketing assets, and 7-day schedules.
+        </p>
+      </div>
+
+      <div class="submit-split">
+        <!-- LEFT: SUBMISSION FORM -->
+        <div class="form-card">
+          <!-- Instant AI Auto-Fill Trigger -->
+          <div class="ai-autofill-box">
+            <div style="font-weight: 700; color: var(--text-main); font-size: 1.05rem;">
+              ⚡ Zero-Friction AI Auto-Fill
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+              Don't want to fill 10 form fields? Paste your website URL and our AI engine will generate taglines, summary, categories, and tags automatically!
+            </p>
+            <div class="ai-input-row">
+              <input 
+                type="url" 
+                id="aiUrlInput" 
+                class="ai-input" 
+                placeholder="https://yourawesometool.com" 
+              />
+              <button type="button" class="btn btn-primary" id="aiAutoFillBtn">
+                <span>✨ Auto-Fill with AI</span>
+              </button>
+            </div>
+          </div>
+
+          <form id="submitProductForm">
+            <!-- STEP 1: BASICS -->
+            <div style="margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+              <h3 style="font-size: 1.2rem; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 24px; height: 24px; border-radius: 50%; background: var(--primary); color: var(--primary-ink); display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
+                Product Basics
+              </h3>
+
+              <div class="form-group">
+                <label class="form-label" for="productName">Product Name <span class="req">*</span></label>
+                <input type="text" id="productName" class="form-control" placeholder="e.g. Acme AI Studio" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productUrl">Website or App URL <span class="req">*</span></label>
+                <input type="url" id="productUrl" class="form-control" placeholder="https://example.com" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productTagline">Short Tagline <span class="req">*</span> <span class="hint">(Max 120 chars)</span></label>
+                <input type="text" id="productTagline" class="form-control" placeholder="A single punchy sentence describing your core value." maxlength="140" required />
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="productCategory">Category <span class="req">*</span></label>
+                  <select id="productCategory" class="form-control" required>
+                    <option value="AI Tools">⚡ AI Tools</option>
+                    <option value="DevTools">🛠️ DevTools</option>
+                    <option value="Analytics">📊 Analytics</option>
+                    <option value="Design">🎨 Design</option>
+                    <option value="Marketing">✍️ Marketing</option>
+                    <option value="Productivity">🎧 Productivity</option>
+                    <option value="Fintech">💳 Fintech</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="productIcon">Logo Emoji or Icon <span class="hint">(e.g. ⚡, 🚀, 🤖)</span></label>
+                  <input type="text" id="productIcon" class="form-control" value="🚀" maxlength="4" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productDesc">Detailed Description</label>
+                <textarea id="productDesc" class="form-control" placeholder="Explain what problem your product solves, key features, and who it is built for."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productTags">Tags / Keywords <span class="hint">(Comma separated)</span></label>
+                <input type="text" id="productTags" class="form-control" placeholder="AI, SaaS, Automation, Next.js" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="founderName">Maker / Founder Name</label>
+                <input type="text" id="founderName" class="form-control" placeholder="Your name or handle" />
+              </div>
+            </div>
+
+            <!-- STEP 2: MAKER PERK & DEAL -->
+            <div style="margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--border-subtle);">
+              <h3 style="font-size: 1.2rem; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 24px; height: 24px; border-radius: 50%; background: var(--coral); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
+                Community Deal & Perks <span style="font-size: 0.8rem; font-weight: 500; color: var(--text-muted);">(Optional — boosts clicks by 3x!)</span>
+              </h3>
+
+              <div style="display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 16px; margin-bottom: 20px;">
+                <div class="form-group">
+                  <label class="form-label" for="dealText">Discount Offer Text</label>
+                  <input type="text" id="dealText" class="form-control" placeholder="e.g. 25% OFF First 3 Months" />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="dealCode">Promo / Coupon Code</label>
+                  <input type="text" id="dealCode" class="form-control" placeholder="e.g. LAUNCHDOCK25" />
+                </div>
+              </div>
+
+              <!-- FIRST 10 TESTERS RECRUITMENT TOGGLE -->
+              <div style="background: rgba(56, 189, 248, 0.06); border: 1px dashed rgba(56, 189, 248, 0.35); border-radius: var(--radius-md); padding: 18px;">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 700; color: var(--cyan); margin-bottom: 10px;">
+                  <input type="checkbox" id="enableTestersCheckbox" checked style="width: 18px; height: 18px; accent-color: var(--cyan);" />
+                  <span>🧪 Recruit First 10 Beta Testers (Get authentic bug reports & reviews)</span>
+                </label>
+                <div id="testerFieldsContainer">
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-label" for="testerRewardInput" style="font-size: 0.82rem;">Tester Reward / Perk <span class="hint">(What do testers get in exchange?)</span></label>
+                    <input type="text" id="testerRewardInput" class="form-control" value="🎁 Free 6-Month Pro License ($150 value)" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STEP 3: LAUNCH TIER SELECTION -->
+            <div style="margin-bottom: 32px;">
+              <h3 style="font-size: 1.2rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 24px; height: 24px; border-radius: 50%; background: var(--mint); color: var(--mint-ink); display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
+                Select Launch Speed & Visibility
+              </h3>
+
+              <div class="tier-selector-grid">
+                <!-- Free Tier -->
+                <div class="tier-select-card" data-tier="free" id="tierOptionFree">
+                  <div class="tier-card-title">Free Queue</div>
+                  <div class="tier-card-price">$0</div>
+                  <div class="tier-card-desc">Standard queue (3-5 days review). Organic directory listing.</div>
+                </div>
+
+                <!-- Fast-Track Tier (Selected Default) -->
+                <div class="tier-select-card selected" data-tier="fast-track" id="tierOptionFastTrack">
+                  <div class="tier-card-title">⚡ Fast-Track</div>
+                  <div class="tier-card-price">$19</div>
+                  <div class="tier-card-desc">Guaranteed 24h approval + 48h Top Spotlight + Do-follow backlink.</div>
+                </div>
+
+                <!-- Pro Tier -->
+                <div class="tier-select-card" data-tier="pro" id="tierOptionPro">
+                  <div class="tier-card-title">👑 Pro Maker</div>
+                  <div class="tier-card-price">$29/mo</div>
+                  <div class="tier-card-desc">Unlimited launches, instant approval, newsletter spotlight.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- AUTOMATED SOCIAL MEDIA CAMPAIGN ACTIVATION CALLOUT -->
+            <div style="margin-bottom: 24px; padding: 16px 20px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(56, 189, 248, 0.08) 100%); border: 1px solid rgba(34, 197, 94, 0.35); border-radius: var(--radius-md);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 1.2rem;">🚀</span>
+                  <strong style="color: var(--mint); font-size: 0.95rem;">Instant Social Media Campaign Activation</strong>
+                </div>
+                <span class="badge" style="background: rgba(34, 197, 94, 0.2); color: var(--mint); border: 1px solid var(--mint); font-size: 0.72rem; padding: 2px 8px; border-radius: 99px;">
+                  🟢 Auto-Active on Submit
+                </span>
+              </div>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                Jaise hi aap URL submit karenge, aapka campaign <strong>turant ACTIVE</strong> ho jayega! BetaDock AI automatically X (Twitter), LinkedIn, Reddit, Instagram aur Product Hunt ke liye custom copy, viral hooks aur launch assets generate karke queue kar dega.
+              </p>
+              <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+                <span class="badge" style="background: rgba(29, 155, 240, 0.15); color: #1d9bf0; border: 1px solid rgba(29, 155, 240, 0.3); font-size: 0.72rem;">🐦 X Auto-Draft</span>
+                <span class="badge" style="background: rgba(10, 102, 194, 0.15); color: #0a66c2; border: 1px solid rgba(10, 102, 194, 0.3); font-size: 0.72rem;">💼 LinkedIn Story</span>
+                <span class="badge" style="background: rgba(255, 69, 0, 0.15); color: #ff4500; border: 1px solid rgba(255, 69, 0, 0.3); font-size: 0.72rem;">🤖 Reddit Thread</span>
+                <span class="badge" style="background: rgba(218, 85, 47, 0.15); color: #da552f; border: 1px solid rgba(218, 85, 47, 0.3); font-size: 0.72rem;">🐱 Product Hunt Comment</span>
+              </div>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;" id="submitProductBtn">
+              ⚡ Publish & Activate Social Launch Campaign →
+            </button>
+            <p style="text-align: center; font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);">
+              By launching, you agree to our community guidelines. Generates AI launch strategy & marketing assets instantly.
+            </p>
+          </form>
+        </div>
+
+        <!-- RIGHT: LIVE CARD PREVIEW (STICKY) -->
+        <div class="preview-sticky-wrap">
+          <div class="preview-panel">
+            <div class="preview-badge-header">
+              <span>● Live Directory Card Preview</span>
+            </div>
+
+            <div class="product-card is-featured" style="cursor: default; pointer-events: none;">
+              <div class="product-card-header">
+                <div class="product-icon" id="previewIcon" style="background: rgba(245,186,39,0.15); color: var(--primary);">
+                  🚀
+                </div>
+                <div class="product-card-title-group">
+                  <div class="product-card-title">
+                    <span id="previewName">Your Awesome Product</span>
+                    <span class="featured-badge" style="font-size:0.65rem;">Featured</span>
+                  </div>
+                  <div class="product-card-meta">
+                    <span class="category-badge-chip" id="previewCategory">AI Tools</span>
+                    <span class="pricing-badge-chip">Freemium</span>
+                  </div>
+                </div>
+              </div>
+
+              <p class="product-card-desc" id="previewTagline">
+                A brief, punchy one-liner describing what your tool solves for users.
+              </p>
+
+              <div class="product-card-tags">
+                <span class="tag-item">#BetaDock</span>
+                <span class="deal-badge" id="previewDeal" style="display: none;">🏷️ 20% OFF</span>
+              </div>
+
+              <div class="card-footer">
+                <span class="visit-link">Visit Website ↗</span>
+                <div class="upvote-btn upvoted">
+                  <span class="upvote-arrow">▲</span>
+                  <span class="upvote-count">46</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 24px; padding: 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+              <div style="font-weight: 700; font-size: 0.88rem; margin-bottom: 6px; color: var(--text-main);">
+                💡 Tip for High Upvotes:
+              </div>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); padding-left: 18px; line-height: 1.5;">
+                <li>Keep your tagline focused on the tangible benefit.</li>
+                <li>Add a discount deal to incentivize early adopters to click.</li>
+                <li>Embed our badge on your homepage for free viral traffic!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 BetaDock. All rights reserved.</div>
+        <div style="display: flex; gap: 18px;">
+          <a href="index.html">Discover</a>
+          <a href="launch.html">AI Studio</a>
+          <a href="dashboard.html">Command Center</a>
+          <a href="index.html#pricing">Pricing</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/supabase.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/services/ProductService.js"></script>
+  <script src="js/services/AIService.js"></script>
+  <script src="js/services/CampaignService.js"></script>
+  <script src="js/services/AnalyticsService.js"></script>
+  <script src="js/services/PaymentService.js"></script>
+  <script src="js/services/NotificationService.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

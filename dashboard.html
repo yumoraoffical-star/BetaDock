@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Launch Command Center — BetaDock</title>
+  <meta name="description" content="Manage your product launches, track campaign performance, monitor beta tester feedback, and access the AI Launch Studio.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+</head>
+<body>
+
+  <!-- ================= SITE HEADER ================= -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo-wrap" id="dashLogoLink">
+          <div class="logo-badge">🚀</div>
+          <div class="logo-text">Beta<span>dock</span></div>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link"><span class="nav-pillar-tag tag-discover">Discover</span> Products</a></li>
+            <li><a href="index.html#dock-race" class="nav-link">Daily Race</a></li>
+            <li><a href="index.html#collections" class="nav-link">Collections</a></li>
+            <li><a href="launch.html" class="nav-link"><span class="nav-pillar-tag tag-launch">Launch</span> AI Studio</a></li>
+            <li><a href="dashboard.html" class="nav-link active">Command Center</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <div id="headerAuthContainer"></div>
+          <a href="launch.html" class="btn btn-primary btn-sm">⚡ Launch Studio</a>
+          <a href="submit.html" class="btn btn-ghost btn-sm">+ Submit Tool</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= LAUNCH COMMAND CENTER CONTENT ================= -->
+  <main class="dashboard-layout">
+    <div class="container">
+      
+      <!-- 6 — LAUNCH READINESS BANNER (COMMAND CENTER) -->
+      <div class="command-center-banner">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+          <div>
+            <div class="section-eyebrow">
+              <span>🎯 Launch Command Center</span>
+            </div>
+            <h1 style="font-size: 2.2rem; margin-top: 4px;">Welcome Back, Maker</h1>
+            <p style="font-size: 1rem; color: var(--text-secondary); margin-top: 4px;">
+              Your product launch is <strong style="color: var(--primary);" id="readinessScoreText">68% ready</strong>.
+            </p>
+          </div>
+
+          <div>
+            <a href="launch.html" class="btn btn-primary btn-lg" id="continueLaunchBtn">
+              <span>Continue Launch →</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Visual Progress Bar -->
+        <div class="readiness-bar-wrap">
+          <div class="readiness-track">
+            <div class="readiness-fill" id="readinessFillBar" style="width: 68%;"></div>
+          </div>
+        </div>
+
+        <!-- Checklist Grid -->
+        <div class="checklist-items-grid" id="readinessChecklistContainer">
+          <div class="check-item done"><span class="icon">✓</span> <span>Product analyzed</span></div>
+          <div class="check-item done"><span class="icon">✓</span> <span>Audience identified</span></div>
+          <div class="check-item done"><span class="icon">✓</span> <span>Positioning created</span></div>
+          <div class="check-item done"><span class="icon">✓</span> <span>Marketing strategy created</span></div>
+          <div class="check-item done"><span class="icon">✓</span> <span>Social content generated</span></div>
+          <div class="check-item"><span style="color: var(--text-muted);">○</span> <span>Schedule campaign</span></div>
+          <div class="check-item"><span style="color: var(--text-muted);">○</span> <span>Publish launch everywhere</span></div>
+        </div>
+      </div>
+
+      <!-- 6.2 — CAMPAIGN PERFORMANCE KPIS -->
+      <div class="perf-analytics-grid">
+        <div class="perf-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <h3 style="font-size: 1.25rem;">Multi-Channel Campaign Performance</h3>
+            <span class="channel-badge-pill">Live Reach Analytics</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Aggregated reach and conversions across LinkedIn, X, Reddit, and Product Hunt.</p>
+
+          <div class="perf-stats-row">
+            <div class="perf-kpi-item">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Reach</div>
+              <div style="font-family: var(--font-heading); font-size: 1.7rem; font-weight: 800; color: var(--text-main); margin-top: 4px;">24.8K</div>
+              <div style="font-size: 0.72rem; color: var(--mint); margin-top: 2px;">↑ +34% this week</div>
+            </div>
+
+            <div class="perf-kpi-item">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Website Clicks</div>
+              <div style="font-family: var(--font-heading); font-size: 1.7rem; font-weight: 800; color: var(--cyan); margin-top: 4px;">1,842</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">7.4% CTR</div>
+            </div>
+
+            <div class="perf-kpi-item">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Engagement</div>
+              <div style="font-family: var(--font-heading); font-size: 1.7rem; font-weight: 800; color: var(--primary); margin-top: 4px;">9.4%</div>
+              <div style="font-size: 0.72rem; color: var(--mint); margin-top: 2px;">Above average</div>
+            </div>
+
+            <div class="perf-kpi-item">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Conversions</div>
+              <div style="font-family: var(--font-heading); font-size: 1.7rem; font-weight: 800; color: var(--mint); margin-top: 4px;">126</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">New user signups</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Performing Content Spotlight -->
+        <div class="perf-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">
+              🏆 Best Performing Content
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; margin: 8px 0;">
+              <span style="font-size: 1.2rem;">💼</span>
+              <strong style="color: var(--text-main); font-size: 0.95rem;">LinkedIn Founder Insight</strong>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45;">
+              "5 reasons most solo founders fail at distribution (and how to fix it in 60s)..."
+            </p>
+          </div>
+
+          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+            <span>👁️ 11.4K views</span>
+            <span>🖱️ 824 clicks</span>
+            <span style="color: var(--mint); font-weight: 700;">8.2% CVR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY PRODUCTS TABLE -->
+      <div class="data-table-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3 style="font-size: 1.3rem;">Your Active Listings & Launches</h3>
+            <p style="font-size: 0.85rem;">Manage directory status, boost placements, or launch AI campaign studio.</p>
+          </div>
+          <a href="launch.html" class="btn btn-mint btn-sm">⚡ Open AI Launch Studio</a>
+        </div>
+
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Product & Category</th>
+              <th>Listing Status</th>
+              <th>Upvotes</th>
+              <th>Views</th>
+              <th>Clicks</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dashboardTableBody">
+            <!-- Populated dynamically by js/app.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BETA TESTER FEEDBACK LOG -->
+      <div class="data-table-card" id="betaFeedbackSection" style="border-color: rgba(56, 189, 248, 0.3);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div class="section-eyebrow" style="color: var(--cyan);">
+              <span>🧪 First 10 Beta Tester Reviews</span>
+            </div>
+            <h3 style="font-size: 1.3rem; margin-top: 4px;">User Bug Reports & Honest Feedback</h3>
+            <p style="font-size: 0.85rem;">Feedback submitted by early adopters who tested your products on BetaDock.</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Feedback exported to CSV!', 'success')">
+            📥 Export Feedback
+          </button>
+        </div>
+
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Tester & Email</th>
+              <th>Rating</th>
+              <th>What They Liked</th>
+              <th>Suggestions / Bugs</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="dashboardFeedbackTableBody">
+            <!-- Populated dynamically by js/app.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ================= VIRAL EMBED BADGE BUILDER ================= -->
+      <div class="embed-badge-card" id="embedBadgeSection">
+        <div style="max-width: 640px; margin-bottom: 24px;">
+          <div class="section-eyebrow">
+            <span>🔁 Viral Growth Engine</span>
+          </div>
+          <h2 style="font-size: 1.8rem; margin-top: 4px;">"Featured on BetaDock" Embed Badge</h2>
+          <p style="margin-top: 6px; font-size: 0.95rem;">
+            Embed this interactive badge on your website or GitHub README. It builds immediate social proof, boosts trust with your visitors, and links back to your launch page!
+          </p>
+        </div>
+
+        <!-- Controls Row -->
+        <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-bottom: 20px;">
+          <div>
+            <label class="form-label" for="badgeThemeSelect" style="font-size: 0.82rem;">Badge Theme</label>
+            <select id="badgeThemeSelect" class="filter-select" style="min-width: 160px; padding: 10px;">
+              <option value="dark">Dark Neon Glow</option>
+              <option value="gold">Launch Gold</option>
+              <option value="minimal">Minimal Slate</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label" for="badgeTypeSelect" style="font-size: 0.82rem;">Badge Text Variant</label>
+            <select id="badgeTypeSelect" class="filter-select" style="min-width: 220px; padding: 10px;">
+              <option value="featured">Featured on BetaDock</option>
+              <option value="upvote">▲ Upvote us on BetaDock</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Live Badge Preview Stage -->
+        <div class="badge-preview-box" id="liveBadgeContainer">
+          <!-- Populated by initEmbedBadgeBuilder() in app.js -->
+        </div>
+
+        <!-- Copyable Embed Code Snippet -->
+        <div style="margin-top: 20px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Embed Code</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-ghost btn-sm" id="copyBadgeHtmlBtn">📋 Copy HTML</button>
+              <button class="btn btn-ghost btn-sm" id="copyBadgeMdBtn">📄 Copy Markdown</button>
+            </div>
+          </div>
+
+          <div class="code-snippet-box">
+            <code class="code-snippet-text" id="badgeCodeDisplay">
+              &lt;a href="https://betadock.example.com" target="_blank"&gt;&lt;img src="https://betadock.example.com/badges/dark.svg" alt="Featured on BetaDock" /&gt;&lt;/a&gt;
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 BetaDock. Submit once. Launch everywhere.</div>
+        <div style="display: flex; gap: 18px;">
+          <a href="index.html">Discover</a>
+          <a href="launch.html">AI Studio</a>
+          <a href="dashboard.html">Command Center</a>
+          <a href="submit.html">Submit Tool</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/supabase.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/services/ProductService.js"></script>
+  <script src="js/services/AIService.js"></script>
+  <script src="js/services/CampaignService.js"></script>
+  <script src="js/services/AnalyticsService.js"></script>
+  <script src="js/services/PaymentService.js"></script>
+  <script src="js/services/NotificationService.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
