@@ -1,8 +1,3 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/api/analyze", "destination": "/api/analyze.js" },
-    { "source": "/api/notify", "destination": "/api/notify.js" }
-  ]
+  "cleanUrls": true
 }
