@@ -648,8 +648,11 @@ function openProductModal(productId) {
           <span style="font-family: monospace; font-size: 1rem; margin-left: 4px;">${product.upvotes}</span>
         </button>
         <button type="button" class="btn btn-ghost btn-sm" onclick="copyProductShare('${product.id}')">
-          🔗 Share
+          🔗 Share Link
         </button>
+        <a href="/product?id=${product.id}" class="btn btn-ghost btn-sm" style="text-decoration: none;">
+          📄 Full Page
+        </a>
         <a href="launch.html?id=${product.id}" class="btn btn-outline btn-sm" style="border-color: rgba(245,186,39,0.45); color: var(--primary); text-decoration: none;">
           ⚡ Launch in AI Studio →
         </a>
@@ -662,6 +665,15 @@ function openProductModal(productId) {
   `;
 
   backdrop.classList.add('open');
+}
+
+function copyProductShare(productId) {
+  const url = `${window.location.origin}/product?id=${productId}`;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('🔗 Product launch link copied to clipboard!', 'success');
+  }).catch(() => {
+    window.location.href = `/product?id=${productId}`;
+  });
 }
 
 function closeProductModal() {

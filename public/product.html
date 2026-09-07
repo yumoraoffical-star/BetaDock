@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Product Launch | BetaDock</title>
+  <meta name="description" id="pageDescription" content="Discover, upvote, and explore verified early products on BetaDock.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <style>
+    .product-page-wrap { padding: 48px 0 80px; }
+    .product-hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+    }
+    .product-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .product-hero-left {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex: 1;
+      min-width: 280px;
+    }
+    .product-hero-icon {
+      width: 88px;
+      height: 88px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      background: #1e293b;
+      flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .product-hero-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .product-hero-tagline {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .product-hero-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-upvote-huge {
+      background: rgba(245, 186, 39, 0.1);
+      border: 2px solid var(--primary);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+    .btn-upvote-huge:hover {
+      background: var(--primary);
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(245, 186, 39, 0.35);
+    }
+    .product-meta-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      align-items: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .share-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 24px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      background: #1e293b;
+      color: #fff;
+      transition: background 0.2s;
+    }
+    .share-btn:hover { background: #334155; }
+    .share-btn-x { background: #000; border-color: #333; }
+    .share-btn-wa { background: #059669; border-color: #059669; }
+    .product-content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 32px;
+    }
+    @media (max-width: 900px) {
+      .product-content-grid { grid-template-columns: 1fr; }
+    }
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .section-card h3 {
+      font-size: 1.25rem;
+      color: #fff;
+      margin: 0 0 16px;
+    }
+    .badge-code-box {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #38bdf8;
+      word-break: break-all;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= SITE HEADER ================= -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo-wrap">
+          <div class="logo-badge">🚀</div>
+          <div class="logo-text">Beta<span>dock</span></div>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li><a href="/" class="nav-link"><span class="nav-pillar-tag tag-discover">Discover</span> Products</a></li>
+            <li><a href="/launch" class="nav-link"><span class="nav-pillar-tag tag-launch">Launch</span> AI Studio</a></li>
+            <li><a href="/dashboard" class="nav-link">Command Center</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <a href="/launch" class="btn btn-primary btn-sm">⚡ Launch Studio</a>
+          <a href="/submit" class="btn btn-ghost btn-sm">+ Submit Tool</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="product-page-wrap">
+    <div class="container">
+      
+      <!-- HERO CARD -->
+      <div class="product-hero-card" id="productHeroContainer">
+        <div class="product-hero-top">
+          <div class="product-hero-left">
+            <div class="product-hero-icon" id="productIcon">🚀</div>
+            <div>
+              <h1 class="product-hero-title">
+                <span id="productName">Loading Product...</span>
+                <span class="badge badge-featured" id="featuredBadge" style="display:none;">Featured</span>
+              </h1>
+              <p class="product-hero-tagline" id="productTagline">Please wait while we fetch product details...</p>
+            </div>
+          </div>
+
+          <div class="product-hero-actions">
+            <button class="btn-upvote-huge" id="upvoteBtn" onclick="handleUpvote()">
+              <span>▲ UPVOTE</span>
+              <span id="upvoteCount">0</span>
+            </button>
+            <a href="#" target="_blank" rel="noopener" class="btn btn-secondary" id="visitSiteBtn">Visit Website ↗</a>
+          </div>
+        </div>
+
+        <div class="product-meta-row">
+          <div>Category: <strong id="productCategory" class="badge badge-category">AI Tools</strong></div>
+          <div>Pricing: <strong id="productPricing" style="color:#fff;">Freemium</strong></div>
+          <div>Maker: <strong id="productFounder" style="color:#fff;">Maker</strong></div>
+          <div>Status: <span style="color:#10b981;">● Active on BetaDock</span></div>
+        </div>
+
+        <!-- SHARE BAR -->
+        <div class="share-bar">
+          <span style="font-weight:600; color:#fff; font-size:0.9rem;">Share Launch:</span>
+          <a href="#" id="shareX" target="_blank" class="share-btn share-btn-x">𝕏 Share on X</a>
+          <a href="#" id="shareWA" target="_blank" class="share-btn share-btn-wa">💬 WhatsApp</a>
+          <button class="share-btn" onclick="copyLaunchUrl()">📋 Copy Link</button>
+          <a href="/launch" id="launchInStudioBtn" class="btn btn-primary btn-sm" style="margin-left:auto;">⚡ Open in AI Launch Studio →</a>
+        </div>
+      </div>
+
+      <!-- DETAILS GRID -->
+      <div class="product-content-grid">
+        <!-- LEFT: DETAILS -->
+        <div class="content-left">
+          <div class="section-card">
+            <h3>About the Product</h3>
+            <p id="productDescription" style="line-height:1.7; color:var(--text-secondary); font-size:1.05rem;">
+              Description loading...
+            </p>
+          </div>
+
+          <!-- DEAL CARD (IF APPLICABLE) -->
+          <div class="section-card" id="dealCard" style="display:none; border-color:#f5ba27; background:rgba(245,186,39,0.04);">
+            <h3 style="color:#f5ba27;">🎁 Exclusive BetaDock Founder Deal</h3>
+            <p id="dealText" style="color:#fff; margin-bottom:12px;"></p>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <span style="color:var(--text-muted); font-size:0.9rem;">Coupon Code:</span>
+              <code id="dealCode" style="background:#1e293b; padding:6px 14px; border-radius:6px; font-weight:700; color:#f5ba27; font-size:1.05rem;"></code>
+              <button class="btn btn-ghost btn-sm" onclick="copyCoupon()">Copy Code</button>
+            </div>
+          </div>
+
+          <!-- BETA TESTERS RECRUITMENT -->
+          <div class="section-card" id="betaTesterCard">
+            <h3>🧪 First 10 Beta Testers Program</h3>
+            <p style="color:var(--text-secondary); margin-bottom:16px;">
+              The founder is actively recruiting early beta testers in exchange for rewards and lifetime perks.
+            </p>
+            <div style="display:flex; justify-content:space-between; margin-bottom:16px; background:#1e293b; padding:12px 18px; border-radius:8px;">
+              <span>Spots Remaining: <strong id="spotsRemaining" style="color:#10b981;">10 / 10</strong></span>
+              <span>Reward: <strong id="testerReward" style="color:#f5ba27;">Free Pro Access</strong></span>
+            </div>
+            <a href="/submit" class="btn btn-secondary btn-sm">Join Beta Tester Waitlist</a>
+          </div>
+        </div>
+
+        <!-- RIGHT: EMBED BADGE & STATS -->
+        <div class="content-right">
+          <div class="section-card">
+            <h3>Embed Launch Badge</h3>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:14px;">
+              Show this product is listed on BetaDock on your landing page or GitHub README:
+            </p>
+            <div style="text-align:center; padding:16px; background:#0f172a; border-radius:8px; margin-bottom:14px;">
+              <span class="badge" style="background:#f5ba27; color:#000; font-weight:800; font-size:0.95rem; padding:8px 16px; border-radius:30px;">
+                🚀 Featured on BetaDock
+              </span>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="width:100%;" onclick="copyBadgeCode()">Copy HTML Embed</button>
+            <div class="badge-code-box" id="embedSnippet"></div>
+          </div>
+
+          <div class="section-card">
+            <h3>Launch With AI</h3>
+            <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6;">
+              Want to generate multi-channel marketing campaigns, Reddit pitches, and tweet threads for this product?
+            </p>
+            <a href="/launch" id="sideLaunchBtn" class="btn btn-primary" style="width:100%; margin-top:12px;">⚡ Launch in Studio</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= SITE FOOTER ================= -->
+  <footer class="site-footer" style="margin-top:60px; padding:40px 0; border-top:1px solid var(--border-color); text-align:center; color:var(--text-muted);">
+    <div class="container">
+      <p>© 2026 BetaDock — Submit once. Launch everywhere.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/services/ProductService.js"></script>
+  <script>
+    let currentProduct = null;
+
+    function getParam(key) {
+      return new URLSearchParams(window.location.search).get(key);
+    }
+
+    async function initPage() {
+      const id = getParam('id');
+      const products = await ProductService.getAllProducts();
+      currentProduct = products.find(p => p.id === id) || products[0];
+
+      if (!currentProduct) return;
+
+      document.getElementById('pageTitle').textContent = `${currentProduct.name} — BetaDock Launch`;
+      document.getElementById('pageDescription').content = currentProduct.tagline;
+      document.getElementById('productIcon').textContent = currentProduct.icon || '🚀';
+      document.getElementById('productIcon').style.background = currentProduct.iconBg || '#1e293b';
+      document.getElementById('productName').textContent = currentProduct.name;
+      document.getElementById('productTagline').textContent = currentProduct.tagline;
+      document.getElementById('productCategory').textContent = currentProduct.category;
+      document.getElementById('productPricing').textContent = currentProduct.pricing;
+      document.getElementById('productFounder').textContent = currentProduct.founder || 'Maker';
+      document.getElementById('productDescription').textContent = currentProduct.description;
+      document.getElementById('upvoteCount').textContent = currentProduct.upvotes || 1;
+      document.getElementById('visitSiteBtn').href = currentProduct.url;
+
+      if (currentProduct.featured) {
+        document.getElementById('featuredBadge').style.display = 'inline-block';
+      }
+
+      if (currentProduct.deal && currentProduct.deal.hasDeal) {
+        document.getElementById('dealCard').style.display = 'block';
+        document.getElementById('dealText').textContent = currentProduct.deal.text;
+        document.getElementById('dealCode').textContent = currentProduct.deal.code;
+      }
+
+      const studioUrl = `/launch?url=${encodeURIComponent(currentProduct.url)}&name=${encodeURIComponent(currentProduct.name)}&category=${encodeURIComponent(currentProduct.category)}`;
+      document.getElementById('launchInStudioBtn').href = studioUrl;
+      document.getElementById('sideLaunchBtn').href = studioUrl;
+
+      // Setup Social Share Links
+      const pageUrl = encodeURIComponent(window.location.href);
+      const shareText = encodeURIComponent(`Check out ${currentProduct.name} on @BetaDock! ${currentProduct.tagline} 🚀`);
+      document.getElementById('shareX').href = `https://twitter.com/intent/tweet?text=${shareText}&url=${pageUrl}`;
+      document.getElementById('shareWA').href = `https://api.whatsapp.com/send?text=${shareText}%20${pageUrl}`;
+
+      // Embed snippet
+      const badgeHtml = `<a href="${window.location.href}" target="_blank"><img src="https://betadock.youmika.site/badge.svg" alt="${currentProduct.name} on BetaDock" /></a>`;
+      document.getElementById('embedSnippet').textContent = badgeHtml;
+    }
+
+    async function handleUpvote() {
+      if (!currentProduct) return;
+      currentProduct.upvotes = (currentProduct.upvotes || 0) + 1;
+      document.getElementById('upvoteCount').textContent = currentProduct.upvotes;
+      await ProductService.saveProduct(currentProduct);
+      if (typeof SupabaseClient !== 'undefined') {
+        SupabaseClient.updateUpvotes(currentProduct.id, currentProduct.upvotes);
+      }
+    }
+
+    function copyLaunchUrl() {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Launch link copied to clipboard!');
+    }
+
+    function copyCoupon() {
+      if (currentProduct && currentProduct.deal) {
+        navigator.clipboard.writeText(currentProduct.deal.code);
+        alert(`Coupon ${currentProduct.deal.code} copied!`);
+      }
+    }
+
+    function copyBadgeCode() {
+      const code = document.getElementById('embedSnippet').textContent;
+      navigator.clipboard.writeText(code);
+      alert('Embed badge HTML copied!');
+    }
+
+    document.addEventListener('DOMContentLoaded', initPage);
+  </script>
+</body>
+</html>
